@@ -62,12 +62,10 @@ public class AccessDatabase {
         }
         return isRegistered;
     }
-    public boolean addNewUser(String name, String address, int cardInfo, String billingName, String billingAddress, String email, String password, int phoneNumber, int billingPhoneNumber){
-        boolean isRegistered = false;
+    public void addNewUser(String name, String address, int cardInfo, String billingName, String billingAddress, String email, String password, int phoneNumber, int billingPhoneNumber){
+        
         try {
-            if(getSpecificUser(email, password)){
-                return false;
-            }
+            
             Statement myStmt = dbConnect.createStatement();
             String tmp = String.format("INSERT INTO account " + "VALUES (%s, %s, %s, %d, %s, %s, %s, %s, %d, %d)", 
                 name, address, cardInfo, billingAddress, email, password, phoneNumber, billingPhoneNumber);
@@ -77,7 +75,44 @@ public class AccessDatabase {
         }catch(SQLException e){
 
         }
-        return isRegistered;
+        
+    }
+
+    public void addNewMovie(String title, String genre, String length, String releaseTime){
+        
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            
+            String tmp = String.format("INSERT INTO movie " + "VALUES ('%s', '%s', '%s', '%s')", 
+                title, genre, length, releaseTime);
+                
+            myStmt.executeUpdate(tmp);
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        
+    }
+    public String getSpecificMovie(String movieName){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "movie");
+            
+            while(results.next()){
+                if(results.getString("Title").equals(movieName)){
+                    
+                    full.append(results.getString("Title") + " the genres are " + results.getString("Genre") + ". The length of movie is " + 
+                    results.getString("Length") + " and it releases on " + results.getString("ReleaseTime"));
+                }
+            }
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        return full.toString();
     }
     public void deleteAvailableFood(String id){
         try {
