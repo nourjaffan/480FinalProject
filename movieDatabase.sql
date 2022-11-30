@@ -4,8 +4,8 @@ USE 'db';
 DROP TABLE IF EXISTS 'time';
 CREATE TABLE 'ShowTimes'
     (
-    'Title'         varchar(45),
-    'ShowTime'      String, 
+    'Title'         varchar(50),
+    'ShowTime'      varchar(50), 
     PRIMARY KEY ('Title', 'ShowTime')
     )
 
@@ -13,9 +13,9 @@ CREATE TABLE 'ShowTimes'
 DROP TABLE IF EXISTS 'movie';
 CREATE TABLE 'movie'
     (
-    'Title'         varchar(45),
-    'Genre'         varchar(45),
-    'Length'        varchar(45),
+    'Title'         varchar(50),
+    'Genre'         varchar(50),
+    'Length'        varchar(50),
     'Release'       time,
     PRIMARY KEY ('Title')
     )
@@ -24,10 +24,10 @@ CREATE TABLE 'movie'
 DROP TABLE IF EXISTS 'seat';
 CREATE TABLE 'seat'
     (
-    'Title'         varchar(45),
+    'Title'         varchar(50),
     'Vacant'        BOOLEAN,
     'SeatNumber'    int,
-    'ShowTime'      String,
+    'ShowTime'      varchar(50),
     PRIMARY KEY ('SeatNumber', 'Title', 'ShowTime')
     )
 
