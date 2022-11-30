@@ -22,7 +22,7 @@ CREATE TABLE 'ticket'
     'SeatNumber'            int,
     'Title'                 varchar(50),
     'Cost'                  float,
-    'Date'                  String,
+    'Date'                  varchar(50),
     'UniqueTicket'          int AUTOINCREMENT,
     PRIMARY KEY ('UniqueTicket')
     )
