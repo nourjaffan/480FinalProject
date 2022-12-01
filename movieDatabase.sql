@@ -6,6 +6,9 @@ CREATE TABLE ShowTimes
     (
     Title         varchar(45),
     ShowTime      varchar(45), 
+    Day           int,
+    Month         int,
+    Year          int,
     PRIMARY KEY (Title, ShowTime)
     );
 
