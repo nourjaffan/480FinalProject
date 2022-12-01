@@ -26,7 +26,7 @@ public class Select{
 
         // BookTicket(ticket);
 
-        // sendReciept(ticket);
+        // sendReciept(ticket.getTicketReciept());
 
     }
 
