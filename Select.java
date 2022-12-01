@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Select{
-    private ArrayList<Ticket> allTickets;
 
     private String theater;
 
@@ -11,10 +10,16 @@ public class Select{
 
     private int seatNum;
 
+    private Account account;
+
+    private boolean regMovieFlag;
+
     private static int uniqueTicket = 0;
+
     private AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
-    public Select(){
+    public Select(Account account){
         access.initializeConnection();
+        this.account = account;
         this.theater = selectTheater();
         this.title = selectTitle();
         this.showTime = selectShowTime();
@@ -23,10 +28,9 @@ public class Select{
         uniqueTicket++;
 
         Ticket ticket = new Ticket(this.seatNum, this.showTime, this.title, this.seatNum, this.theater, uniqueTicket);
-        this.allTickets.add(ticket);
+        // BookTicket(ticket); simulate paying
         access.addNewTicket(seatNum, title, seatNum, theater, uniqueTicket);
-        // BookTicket(ticket);
-
+        account.addTicket(ticket);
         // sendReciept(ticket.getTicketReciept());
         access.dbConnectClose();
     }
@@ -41,12 +45,24 @@ public class Select{
     }
 
     private String selectTitle(){
+        if(this.account.isRegistered()){
+            /*
+            Display Movies playing at selected theater as well as movies not announced
+            take user input
+            check if movie is playing there
+            if(movie has been announced){
+                this.regMovieFlag = true;
+            }
+            return movie name
+            */
+        }else{
         /*
         Display Movies playing at selected theater
         take user input
         check if movie is playing there
         return movie name
         */ 
+        }
     }
 
     private String selectShowTime(){
@@ -59,19 +75,25 @@ public class Select{
     }
 
     private int selectSeatNum(){
-        /*
-        Display seats at show time of selected movie at selected theater
-        take user input
-        check if seat is available
-        return seat number
-        */ 
+        if(this.regMovieFlag == true){
+            if(/*(taken seats / total seats) < 0.1 */){
+                /*
+                Display seats at show time of selected movie at selected theater
+                take user input
+                check if seat is available
+                return seat number
+                */
+            }else{
+                //no seats availabile until public announcment
+            }
+        }else{
+            /*
+            Display seats at show time of selected movie at selected theater
+            take user input
+            check if seat is available
+            return seat number
+            */
+        } 
     }
 
-    public ArrayList<Ticket> getAllTickets(){
-        return this.allTickets;
-    }
-
-    public void updateAllTickets(ArrayList<Ticket> updatedTickets){
-        this.allTickets = updatedTickets;
-    }
 }
