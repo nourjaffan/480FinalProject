@@ -7,7 +7,7 @@ public class AccessDatabase {
 
     private Connection dbConnect;
     private ResultSet results;
-
+/*
     private int totalFoodItems;
 
     public int getTotalFoodItems(){
@@ -25,7 +25,7 @@ public class AccessDatabase {
         }
         return this.totalFoodItems;
     }
-
+*/
     public String getSpecificFood(int itemID){
         StringBuffer full = new StringBuffer();
         try {
@@ -190,6 +190,30 @@ public class AccessDatabase {
         }
         return full.toString();
     }
+    public String getAllShowTimes(String title){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
+            
+            while(results.next()){
+                
+                if(results.getString("Title").equals(title)){
+                    full.append("The show time is: " + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
+                    + " at " + results.getString("ShowTime") + " for the movie " + results.getString("Title") + ".\n");
+                    
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+
+        }
+        
+        return full.toString().strip();
+    }
+    /* 
     public void deleteAvailableFood(String id){
         try {
             String query = "DELETE FROM available_food WHERE ItemID = ?";
@@ -203,6 +227,7 @@ public class AccessDatabase {
         }
 
     }
+    */
     public void dbConnectClose(){
         try {
             dbConnect.close();
@@ -246,7 +271,7 @@ public class AccessDatabase {
         return this.PASSWORD;
     }
 
-
+/*
     public String selectAllAvailableFood(){
 
         StringBuffer full = new StringBuffer();
@@ -289,7 +314,7 @@ public class AccessDatabase {
 
         return full.toString();
     }
-
+*/
     public void close() {
 
         try {
