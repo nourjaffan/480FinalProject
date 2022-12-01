@@ -65,6 +65,7 @@ public class Account
                 if(date > 3){
                     cost = this.tickets.get(i).getCost();
                     this.tickets.remove(i);
+                    break;
                 }else{
                     //display ticket cannot be cancelled as movie is within 3 days
                     return;
