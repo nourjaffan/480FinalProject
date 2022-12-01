@@ -3,23 +3,36 @@ public class Ticket{
     private int seatNum;
     private String showTime;
     private String title;
-    private float cost;
-    private String date;
+    private double cost;
+    private int day;
+    private int month;
+    private int year;
     private int uniqueTicket;
 
     public Ticket(int seatNum, String showTime, String title, 
-                    float cost, String date, int uniqueTicket){
+                    double cost, int day, int month, int year, int uniqueTicket){
         
         this.seatNum = seatNum;
         this.showTime = showTime;
         this.title = title;
         this.cost = cost;
-        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.uniqueTicket = uniqueTicket;
     }
 
     public int getSeatNum(){
         return this.seatNum;
+    }
+    public int getDay(){
+        return this.day;
+    }
+    public int getMonth(){
+        return this.month;
+    }
+    public int getYear(){
+        return this.year;
     }
     public String getShowTime(){
         return this.showTime;
@@ -29,9 +42,6 @@ public class Ticket{
     }
     public float getCost(){
         return this.cost;
-    }
-    public String getDate(){
-        return this.date;
     }
     public int getUniqueTicket(){
         return this.uniqueTicket;
