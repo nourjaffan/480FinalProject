@@ -37,3 +37,18 @@ public class Ticket{
         return this.uniqueTicket;
     }
 }
+
+public class ticketReciept
+{
+  private int uniqueNumber;
+  
+  public ticketReciept(int number)
+  {
+    uniqueNumber = number;
+  }
+  
+  public int getTicketReciept()
+  {
+    return uniqueNumber;
+  }
+}
