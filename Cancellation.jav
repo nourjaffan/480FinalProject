@@ -1,4 +1,4 @@
-
+this file has been replaced with a function in account
 import java.util.ArrayList;
 
 public class Cancellation{
