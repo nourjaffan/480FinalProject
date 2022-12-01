@@ -25,7 +25,9 @@ CREATE TABLE ticket
     ShowTime              varchar(50),
     Title                 varchar(50),
     Cost                  float,
-    Date                  varchar(50),
+    Day                   int,
+    Month                 int,
+    Year                  int,
     UniqueTicket          int not null AUTO_INCREMENT,
     PRIMARY KEY (UniqueTicket)
     );
