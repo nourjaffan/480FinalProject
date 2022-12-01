@@ -7,7 +7,7 @@ CREATE TABLE account(
     Name                  varchar(50),
     Address               varchar(50),
     CardNumber            int,
-    cardName              varchar(50);
+    cardName              varchar(50),
     BillingName           varchar(50),
     BillingAddress        varchar(50),
     Email                 varchar(50),
