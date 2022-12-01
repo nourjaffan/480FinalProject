@@ -17,7 +17,7 @@ public class Select{
         this.theater = selectTheater();
         this.title = selectTitle();
         this.showTime = selectShowTime();
-        this.seatNUm = selectSeatNum();
+        this.seatNum = selectSeatNum();
 
         uniqueTicket++;
 
@@ -57,12 +57,20 @@ public class Select{
         */ 
     }
 
-    private int selectseatNum(){
+    private int selectSeatNum(){
         /*
         Display seats at show time of selected movie at selected theater
         take user input
         check if seat is available
         return seat number
         */ 
+    }
+
+    public ArrayList<Ticket> getAllTickets(){
+        return this.allTickets;
+    }
+
+    public void updateAllTickets(ArrayList<Ticket> updatedTickets){
+        this.allTickets = updatedTickets;
     }
 }
