@@ -12,8 +12,9 @@ public class Select{
     private int seatNum;
 
     private static int uniqueTicket = 0;
-
+    private AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
     public Select(){
+        access.initializeConnection();
         this.theater = selectTheater();
         this.title = selectTitle();
         this.showTime = selectShowTime();
@@ -23,11 +24,11 @@ public class Select{
 
         Ticket ticket = new Ticket(this.seatNum, this.showTime, this.title, this.seatNum, this.theater, uniqueTicket);
         this.allTickets.add(ticket);
-
+        access.addNewTicket(seatNum, title, seatNum, theater, uniqueTicket);
         // BookTicket(ticket);
 
         // sendReciept(ticket.getTicketReciept());
-
+        access.dbConnectClose();
     }
 
     private String selectTheater(){
