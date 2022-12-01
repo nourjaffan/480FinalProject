@@ -114,6 +114,23 @@ public class AccessDatabase {
         }
         return full.toString();
     }
+
+    public void addNewTicket(int num, String title, float cost, String date, int unique){
+        
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            
+            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', %d, '%s', %d)", 
+                num, title, cost, date, unique);
+                
+            myStmt.executeUpdate(tmp);
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        
+    }
     public void deleteAvailableFood(String id){
         try {
             String query = "DELETE FROM available_food WHERE ItemID = ?";
