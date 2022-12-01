@@ -114,22 +114,81 @@ public class AccessDatabase {
         }
         return full.toString();
     }
-
-    public void addNewTicket(int num, String title, float cost, String date, int unique){
+    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
             
-            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', %d, '%s', %d)", 
-                num, title, cost, date, unique);
-                
+            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, %d)", 
+                seatNum, showTime, title, cost, day, month, year, unique);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
 
         }
         
+    }
+
+    public String getSpecificTicket(String title, int unique){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "ticket");
+            
+            while(results.next()){
+                
+                if(results.getString("Title").equals(title) && results.getInt("UniqueTicket") == unique){
+                    full.append("The seat sumber is: " + results.getInt("SeatNumber") + " for the movie " + results.getString("Title") + " on " 
+                    + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + ".");
+                    
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+
+        }
+        return full.toString();
+    }
+
+    public void addNewShowTime(String title, String showTime, int day, int month, int year){
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            
+            String tmp = String.format("INSERT INTO showtimes " + "VALUES ('%s', '%s', %d, %d, %d)", 
+                title, showTime, day, month, year);
+            myStmt.executeUpdate(tmp);
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+    }
+
+    public String getSpecificShowTime(String title, String showTime, int day, int month, int year){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
+            
+            while(results.next()){
+                
+                if(results.getString("Title").equals(title) && results.getString("ShowTime").equals(showTime) &&
+                    results.getInt("Day") == day && results.getInt("Month") == month && results.getInt("Year") == year){
+                    full.append("The show time is: " + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
+                    + " at " + results.getString("ShowTime") + " for the movie " + results.getString("Title") + ".");
+                    
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+
+        }
+        return full.toString();
     }
     public void deleteAvailableFood(String id){
         try {
