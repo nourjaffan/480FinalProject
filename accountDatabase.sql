@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS ticket;
 CREATE TABLE ticket
     (
     SeatNumber            int,
+    ShowTime              varchar(45),
     Title                 varchar(50),
     Cost                  float,
     Date                  varchar(50),
