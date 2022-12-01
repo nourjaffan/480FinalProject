@@ -2,11 +2,12 @@ import java.util.ArrayList;
 
 public class Select{
 
-    private String theater;
-
     private String title;
 
     private String showTime;
+    private int day;
+    private int month;
+    private int year;
 
     private int seatNum;
 
@@ -20,28 +21,18 @@ public class Select{
     public Select(Account account){
         access.initializeConnection();
         this.account = account;
-        this.theater = selectTheater();
         this.title = selectTitle();
         this.showTime = selectShowTime();
         this.seatNum = selectSeatNum();
 
         uniqueTicket++;
 
-        Ticket ticket = new Ticket(this.seatNum, this.showTime, this.title, this.seatNum, this.theater, uniqueTicket);
+        Ticket ticket = new Ticket(this.seatNum, this.showTime, this.title, 15.0, this.day, this.month, this.year, uniqueTicket);
         // BookTicket(ticket); simulate paying
-        access.addNewTicket(seatNum, title, seatNum, theater, uniqueTicket);
+        access.addNewTicket(seatNum, title, seatNum, uniqueTicket);
         account.addTicket(ticket);
         // sendReciept(ticket.getTicketReciept());
         access.dbConnectClose();
-    }
-
-    private String selectTheater(){
-        /*
-        display theaters
-        take user input
-        check if theater is in the database
-        return theater name
-        */
     }
 
     private String selectTitle(){
@@ -70,6 +61,9 @@ public class Select{
         Display selected Movies showtimes at selected theater
         take user input
         check if Showtime is available
+        this.day = showtime.day
+        this.month = showtime.month
+        this.year = showtime.year
         return showtime
         */ 
     }
