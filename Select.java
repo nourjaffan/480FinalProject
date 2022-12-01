@@ -1,0 +1,68 @@
+import java.util.ArrayList;
+
+public class Select{
+    private ArrayList<Ticket> allTickets;
+
+    private String theater;
+
+    private String title;
+
+    private String showTime;
+
+    private int seatNum;
+
+    private static int uniqueTicket = 0;
+
+    public Select(){
+        this.theater = selectTheater();
+        this.title = selectTitle();
+        this.showTime = selectShowTime();
+        this.seatNUm = selectSeatNum();
+
+        uniqueTicket++;
+
+        Ticket ticket = new Ticket(this.seatNum, this.showTime, this.title, this.seatNum, this.theater, uniqueTicket);
+        this.allTickets.add(ticket);
+
+        // BookTicket(ticket);
+
+        // sendReciept(ticket);
+
+    }
+
+    private String selectTheater(){
+        /*
+        display theaters
+        take user input
+        check if theater is in the database
+        return theater name
+        */
+    }
+
+    private String selectTitle(){
+        /*
+        Display Movies playing at selected theater
+        take user input
+        check if movie is playing there
+        return movie name
+        */ 
+    }
+
+    private String selectShowTime(){
+        /*
+        Display selected Movies showtimes at selected theater
+        take user input
+        check if Showtime is available
+        return showtime
+        */ 
+    }
+
+    private int selectseatNum(){
+        /*
+        Display seats at show time of selected movie at selected theater
+        take user input
+        check if seat is available
+        return seat number
+        */ 
+    }
+}
