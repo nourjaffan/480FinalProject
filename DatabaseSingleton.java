@@ -88,4 +88,10 @@ public class DatabaseSingleton {
         access.dbConnectClose();
         return allNews;
     }
+    public boolean getSpecificSeat(String title, int seatNumber, String showTime){
+        access.initializeConnection();
+        boolean available = access.getSpecificSeat(title, seatNumber, showTime);
+        access.dbConnectClose();
+        return available;
+    }
 }
