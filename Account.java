@@ -31,6 +31,7 @@ public class Account
     }
 
     public boolean isRegistered(){
+        
         access.initializeConnection();
         if(access.getSpecificUser(email, password) == true){
             access.dbConnectClose();
@@ -66,6 +67,7 @@ public class Account
         LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
+        double refundAmount = 0;
         if(date > 3){
             
             cost = Float.parseFloat(tmp[0]);
@@ -77,19 +79,23 @@ public class Account
         if(tmp[7].equals("False")){
             //Guest user
             double fee = cost * 0.15;
-            credit -= cost - fee;
+            refundAmount = cost - fee;
             //pay fee
         }else{
             //Registered user does not have to pay fee
-            credit -= cost;
+            refundAmount = cost;
         }
+        //Send email with coupon with refundAmount and the date it expires
         access.dbConnectClose();
     }
 
-    public void displayMovieNews(){
+    public Vector<String> displayMovieNews(){
+        access.initializeConnection();
         if(this.registered == true){
+            return access.getAllNews();
             //display movie news
         }else{
+            return new Vector<>();
             //display that the user is not registered
         }
     }
