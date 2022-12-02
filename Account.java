@@ -7,14 +7,13 @@ public class Account
     private String password;
     private double credit = 0;
 
-    static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
-    
+    //static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
+    private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
     
     
     public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, String cardName, 
                          String billingName, String billingAddress)
     {
-        access.initializeConnection();
         this.email = email;
         this.password = password;
       access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber);
@@ -22,7 +21,6 @@ public class Account
       //pay 20 dollar fee
     }
     public void login(String email, String password) throws Exception{
-        access.initializeConnection();
         if(access.getSpecificUser(email, password)){
             registered = true;
         }else{
@@ -32,33 +30,24 @@ public class Account
 
     public boolean isRegistered(){
         
-        access.initializeConnection();
         if(access.getSpecificUser(email, password) == true){
-            access.dbConnectClose();
             return true;
         }else{
-            access.dbConnectClose();
             return false;
         }
         
     }
 
     public void addTicket(Ticket ticket){
-        access.initializeConnection();
         access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
                             ticket.getUniqueTicket(), email);
-        access.dbConnectClose();
     }
     public void addTicket(Ticket ticket, String guestEmail){
-        access.initializeConnection();
         access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
                             ticket.getUniqueTicket(), guestEmail);
-        access.dbConnectClose();
     }
     public void cancelTheTicket(int uniqueTicket, String email){
-        access.initializeConnection();
         if(access.getSpecificTicket(uniqueTicket, email) == null){  //If there is no ticket found in database return nothing there
-            access.dbConnectClose();
             return;
         }
         LocalDate time = java.time.LocalDate.now();
@@ -86,11 +75,10 @@ public class Account
             refundAmount = cost;
         }
         //Send email with coupon with refundAmount and the date it expires
-        access.dbConnectClose();
+
     }
 
     public Vector<String> displayMovieNews(){
-        access.initializeConnection();
         if(this.registered == true){
             return access.getAllNews();
             //display movie news
