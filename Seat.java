@@ -5,6 +5,8 @@ public class Seat
   private int seatNumber;
   private String showTime;
   
+  private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
+  
   public Seat(String title, bool vacant, int seatNumber, String showTime)
   {
     this.title = title;
@@ -33,9 +35,9 @@ public class Seat
     return vacant;
   }
   
-  public boolean isSeatAvailable(String tit, int seatNumber, String showTime)
+  public void isSeatAvailable(Seat seat)
   {
-    return AccessDatabase.getSpecificSeat(tit, seat, show);
+    access.getSpecificSeat(seat.getTitle(), seat.getSeatNumber(), seat.getShowTime());
   }
   
 }
