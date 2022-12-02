@@ -12,12 +12,12 @@ public class Account
     
     
     public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, String cardName, 
-                         String billingName, String billingAddress, String billingPhoneNumber)
+                         String billingName, String billingAddress)
     {
         access.initializeConnection();
         this.email = email;
         this.password = password;
-      access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber, billingPhoneNumber);
+      access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber);
       this.registered = true;
       //pay 20 dollar fee
     }
@@ -63,7 +63,7 @@ public class Account
         LocalDate time = java.time.LocalDate.now();
         Float cost = (float) 0;
         String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
-        LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]), Integer.parseInt(tmp[2]));
+        LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
         if(date > 3){
@@ -74,7 +74,7 @@ public class Account
         }else{
             return;
         }
-        if(tmp[5].equals("False")){
+        if(tmp[7].equals("False")){
             //Guest user
             double fee = cost * 0.15;
             credit -= cost - fee;
@@ -85,8 +85,6 @@ public class Account
         }
         access.dbConnectClose();
     }
-
-   
 
     public void displayMovieNews(){
         if(this.registered == true){
