@@ -35,7 +35,7 @@ public class Seat
   
   public boolean isSeatAvailable(String tit, int seatNumber, String showTime)
   {
-    return getSpecificSeat(tit, seat, show);
+    return AccessDatabase.getSpecificSeat(tit, seat, show);
   }
   
 }
