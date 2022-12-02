@@ -3,86 +3,90 @@ import java.util.*;
 public class Account
 {
     private boolean registered = false;
-    private double credit;
-    private String movieNews;
-
-    private String address;
-    private String name;
     private String email;
     private String password;
-    private int phoneNumber;
-    
-    private String cardNumber;
-    private String cardName;
-    
-    private String billingName;
-    private String billingAddress;
-    private int billingPhoneNumber;
+    private double credit = 0;
 
-    private ArrayList<Ticket> tickets;
-
-    public Account(String address, String name, String email, String password, int phoneNumber){
-        this.address = address;
-        this.name = name;
+    static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
+    
+    
+    
+    public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, String cardName, 
+                         String billingName, String billingAddress, String billingPhoneNumber)
+    {
+        access.initializeConnection();
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
-    }
-    
-    
-    public void Register(String cardNumber, String cardName, String billingName, String billingAddress, int billingPhoneNumber)
-    {
-      this.cardNumber = cardNumber;
-      this.cardName = cardName;
-      this.billingName = billingName;
-      this.billingAddress = billingAddress;
-      this.billingPhoneNumber = billingPhoneNumber;
+      access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber, billingPhoneNumber);
       this.registered = true;
       //pay 20 dollar fee
     }
+    public void login(String email, String password) throws Exception{
+        access.initializeConnection();
+        if(access.getSpecificUser(email, password)){
+            registered = true;
+        }else{
+            throw new Exception("The email or the password is wrong");
+        }
+    }
 
     public boolean isRegistered(){
-        if(this.registered == true){
+        access.initializeConnection();
+        if(access.getSpecificUser(email, password) == true){
+            access.dbConnectClose();
             return true;
         }else{
+            access.dbConnectClose();
             return false;
         }
+        
     }
 
     public void addTicket(Ticket ticket){
-        this.tickets.add(ticket);
+        access.initializeConnection();
+        access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
+                            ticket.getUniqueTicket(), email);
+        access.dbConnectClose();
+    }
+    public void addTicket(Ticket ticket, String guestEmail){
+        access.initializeConnection();
+        access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
+                            ticket.getUniqueTicket(), guestEmail);
+        access.dbConnectClose();
+    }
+    public void cancelTheTicket(int uniqueTicket, String email){
+        access.initializeConnection();
+        if(access.getSpecificTicket(uniqueTicket, email) == null){  //If there is no ticket found in database return nothing there
+            access.dbConnectClose();
+            return;
+        }
+        LocalDate time = java.time.LocalDate.now();
+        Float cost = (float) 0;
+        String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
+        LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]), Integer.parseInt(tmp[2]));
+        String compare = time.until(ticket).toString();
+        Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
+        if(date > 3){
+            
+            cost = Float.parseFloat(tmp[0]);
+            access.removeSpecificTicket(Integer.toString(uniqueTicket));    
+            
+        }else{
+            return;
+        }
+        if(tmp[5].equals("False")){
+            //Guest user
+            double fee = cost * 0.15;
+            credit -= cost - fee;
+            //pay fee
+        }else{
+            //Registered user does not have to pay fee
+            credit -= cost;
+        }
+        access.dbConnectClose();
     }
 
-    public void cancelTicket(int uniqueTicket){
-        LocalDate time = java.time.LocalDate.now();
-        int originalSize = this.tickets.size(); 
-        double cost = 0;
-        for(int i = 0; i < this.tickets.size(); i++){
-            if(this.tickets.get(i).getUniqueTicket() == uniqueTicket){
-                LocalDate ticket = LocalDate.of(this.tickets.get(i).getYear(), this.tickets.get(i).getMonth(), this.tickets.get(i).getDay());
-                String compare = time.until(ticket).toString();
-                Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
-                if(date > 3){
-                    cost = this.tickets.get(i).getCost();
-                    this.tickets.remove(i);
-                    break;
-                }else{
-                    //display ticket cannot be cancelled as movie is within 3 days
-                    return;
-                }
-            }
-        }
-        if(originalSize == this.tickets.size()){
-            //Display Ticket Not found to GUI
-        }else{
-            //Display Ticket found
-            if(this.registered == false){
-                double fee = cost * 0.15;
-                // pay fee
-            }
-            this.credit = cost;
-        }
-    }
+   
 
     public void displayMovieNews(){
         if(this.registered == true){
