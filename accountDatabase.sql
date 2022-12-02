@@ -12,7 +12,6 @@ CREATE TABLE account(
     Email                 varchar(50),
     Password              varchar(50),
     PhoneNumber           varchar(50),
-    BillingPhoneNumber    varchar(50),
     PRIMARY KEY (Email)
 );
 
@@ -27,8 +26,9 @@ CREATE TABLE ticket
     Day                   int,
     Month                 int,
     Year                  int,
-    UniqueTicket          int not null AUTO_INCREMENT,
     Email				  varchar(50),
+    UniqueTicket          int not null AUTO_INCREMENT,
+    
     PRIMARY KEY (UniqueTicket)
     );
 
@@ -39,3 +39,12 @@ CREATE TABLE reciept
     UniqueNumber          int,
     PRIMARY KEY(UniqueNumber)
     );
+DROP TABLE IF EXISTS news;
+CREATE TABLE news
+    (
+    News          varchar(500),
+    Day           int,
+    Month         int,
+    Year          int,
+    PRIMARY KEY(News)
+    );  
