@@ -1,15 +1,15 @@
 public class Ticket{
 
     private int seatNum;
-    private string showTime;
-    private string title;
+    private String showTime;
+    private String title;
     private double cost;
     private int day;
     private int month;
     private int year;
     private int uniqueTicket;
 
-    public Ticket(int seatNum, string showTime, string title, 
+    public Ticket(int seatNum, String showTime, String title, 
                     double cost, int day, int month, int year, int uniqueTicket){
         
         this.seatNum = seatNum;
@@ -34,10 +34,10 @@ public class Ticket{
     public int getYear(){
         return this.year;
     }
-    public string getShowTime(){
+    public String getShowTime(){
         return this.showTime;
     }
-    public string getTitle(){
+    public String getTitle(){
         return this.title;
     }
     public float getCost(){
