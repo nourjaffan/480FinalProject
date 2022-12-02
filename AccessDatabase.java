@@ -1,5 +1,7 @@
 import java.sql.*;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Vector;  
 public class AccessDatabase {
     public final String DBURL;
     public final String USERNAME;
@@ -255,6 +257,30 @@ public class AccessDatabase {
         }catch(SQLException e){
 
         }
+    }
+
+    public Vector<String> getAllNews(){
+        Vector<String> full = new Vector<String>();
+        LocalDate theDate = java.time.LocalDate.now();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
+            
+            while(results.next()){
+                LocalDate tmpDate = LocalDate.of(results.getInt("Year"), results.getInt("Month"), results.getInt("Day"));
+                if(tmpDate.isBefore(theDate)){
+                    full.add(results.getString("News") + "/" + tmpDate.toString());
+                    
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+
+        }
+        
+        return full;
     }
     /* 
     public void deleteAvailableFood(String id){
