@@ -231,7 +231,7 @@ public class AccessDatabase {
             while(results.next()){
                 
                 if(results.getString("Title").equals(title)){
-                    full.append("The show time is: " + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
+                    full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
                     + "/" + results.getString("ShowTime") + "/" + results.getString("Title") + "\n");
                     
                 }
@@ -281,6 +281,26 @@ public class AccessDatabase {
         }
         
         return full;
+    }
+
+    public boolean getSpecificSeat(String title, int seatNumber, String showTime){
+        boolean available = true;
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "seat");
+            
+            while(results.next()){
+                if(results.getString("Title").equals(title) && results.getInt("SeatNumber") == seatNumber && results.getString("ShowTime").equals(showTime)){
+                    
+                    available = results.getBoolean("Vacant");
+                }
+            }
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        return available;
     }
     /* 
     public void deleteAvailableFood(String id){
