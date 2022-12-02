@@ -35,9 +35,9 @@ public class Seat
     return vacant;
   }
   
-  public void isSeatAvailable(Seat seat)
+  public boolean isSeatAvailable(Seat seat)
   {
-    access.getSpecificSeat(seat.getTitle(), seat.getSeatNumber(), seat.getShowTime());
+    return access.getSpecificSeat(seat.getTitle(), seat.getSeatNumber(), seat.getShowTime());
   }
   
 }
