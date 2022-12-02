@@ -25,7 +25,7 @@ public class AccessDatabase {
         }
         return this.totalFoodItems;
     }
-*/
+
     public String getSpecificFood(int itemID){
         StringBuffer full = new StringBuffer();
         try {
@@ -45,6 +45,7 @@ public class AccessDatabase {
 
         return full.toString();
     }
+    */
     public boolean getSpecificUser(String email, String password){
         boolean isRegistered = false;
         try {
@@ -62,13 +63,14 @@ public class AccessDatabase {
         }
         return isRegistered;
     }
-    public void addNewUser(String name, String address, int cardInfo, String billingName, String billingAddress, String email, String password, int phoneNumber, int billingPhoneNumber){
+    public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber, String billingPhoneNumber){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
-            String tmp = String.format("INSERT INTO account " + "VALUES (%s, %s, %s, %d, %s, %s, %s, %s, %d, %d)", 
-                name, address, cardInfo, billingAddress, email, password, phoneNumber, billingPhoneNumber);
+            String tmp = String.format("INSERT INTO account " + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber, billingPhoneNumber);
+                
             myStmt.executeUpdate(tmp);
             
             myStmt.close();
@@ -104,8 +106,8 @@ public class AccessDatabase {
             while(results.next()){
                 if(results.getString("Title").equals(movieName)){
                     
-                    full.append(results.getString("Title") + " the genres are " + results.getString("Genre") + ". The length of movie is " + 
-                    results.getString("Length") + " and it releases on " + results.getString("ReleaseTime"));
+                    full.append(results.getString("Title") + "/" + results.getString("Genre") + "/" + 
+                    results.getString("Length") + "/" + results.getString("ReleaseTime"));
                 }
             }
             myStmt.close();
@@ -114,14 +116,14 @@ public class AccessDatabase {
         }
         return full.toString();
     }
-    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique){
+    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
             
-            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, %d)", 
-                seatNum, showTime, title, cost, day, month, year, unique);
+            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, %d, '%s')", 
+                seatNum, showTime, title, cost, day, month, year, unique, email);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
@@ -130,7 +132,7 @@ public class AccessDatabase {
         
     }
 
-    public String getSpecificTicket(String title, int unique){
+    public String getSpecificTicket(int unique, String email){
         StringBuffer full = new StringBuffer();
         try {
             
@@ -139,10 +141,24 @@ public class AccessDatabase {
             
             while(results.next()){
                 
-                if(results.getString("Title").equals(title) && results.getInt("UniqueTicket") == unique){
-                    full.append("The seat sumber is: " + results.getInt("SeatNumber") + " for the movie " + results.getString("Title") + " on " 
-                    + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + ".");
-                    
+                if(results.getInt("UniqueTicket") == unique && results.getString("Email").equals(email)){
+
+                        boolean registered = false;
+                        full.append(results.getFloat("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
+                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/");
+                        
+                        ResultSet checkRegistered = myStmt.executeQuery("SELECT * FROM " + "account");
+                        while(checkRegistered.next()){
+                            
+                            if(checkRegistered.getString("Email").equals(email)){
+                                registered = true;
+                                break;
+                            }
+                        }
+                        
+                        checkRegistered.close();
+                        full.append(registered);
+
                 }
             }
             myStmt.close();
@@ -151,6 +167,19 @@ public class AccessDatabase {
 
         }
         return full.toString();
+    }
+
+    public void removeSpecificTicket(String unique){
+        try {
+            String query = "DELETE FROM ticket WHERE UniqueTicket = ?";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setString(8,unique);
+            myStmt.executeUpdate();
+            myStmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addNewShowTime(String title, String showTime, int day, int month, int year){
@@ -178,8 +207,8 @@ public class AccessDatabase {
                 
                 if(results.getString("Title").equals(title) && results.getString("ShowTime").equals(showTime) &&
                     results.getInt("Day") == day && results.getInt("Month") == month && results.getInt("Year") == year){
-                    full.append("The show time is: " + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
-                    + " at " + results.getString("ShowTime") + " for the movie " + results.getString("Title") + ".");
+                    full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
+                    + "/" + results.getString("ShowTime") + "/" + results.getString("Title"));
                     
                 }
             }
@@ -201,7 +230,7 @@ public class AccessDatabase {
                 
                 if(results.getString("Title").equals(title)){
                     full.append("The show time is: " + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
-                    + " at " + results.getString("ShowTime") + " for the movie " + results.getString("Title") + ".\n");
+                    + "/" + results.getString("ShowTime") + "/" + results.getString("Title") + "\n");
                     
                 }
             }
