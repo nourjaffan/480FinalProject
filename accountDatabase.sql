@@ -6,14 +6,13 @@ DROP TABLE IF EXISTS account;
 CREATE TABLE account(
     Name                  varchar(50),
     Address               varchar(50),
-    CardNumber            int,
-    cardName              varchar(50),
+    CardNumber            varchar(50),
     BillingName           varchar(50),
     BillingAddress        varchar(50),
     Email                 varchar(50),
     Password              varchar(50),
-    PhoneNumber           int,
-    BillingPhoneNumber    int,
+    PhoneNumber           varchar(50),
+    BillingPhoneNumber    varchar(50),
     PRIMARY KEY (Email)
 );
 
@@ -29,6 +28,7 @@ CREATE TABLE ticket
     Month                 int,
     Year                  int,
     UniqueTicket          int not null AUTO_INCREMENT,
+    Email				  varchar(50),
     PRIMARY KEY (UniqueTicket)
     );
 
