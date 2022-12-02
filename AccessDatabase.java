@@ -63,13 +63,13 @@ public class AccessDatabase {
         }
         return isRegistered;
     }
-    public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber, String billingPhoneNumber){
+    public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
-            String tmp = String.format("INSERT INTO account " + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber, billingPhoneNumber);
+            String tmp = String.format("INSERT INTO account " + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
+                name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber);
                 
             myStmt.executeUpdate(tmp);
             
@@ -145,7 +145,7 @@ public class AccessDatabase {
 
                         boolean registered = false;
                         full.append(results.getFloat("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
-                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/");
+                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/" + results.getString("Email") + "/");
                         
                         ResultSet checkRegistered = myStmt.executeQuery("SELECT * FROM " + "account");
                         while(checkRegistered.next()){
@@ -174,7 +174,7 @@ public class AccessDatabase {
             String query = "DELETE FROM ticket WHERE UniqueTicket = ?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
 
-            myStmt.setString(8,unique);
+            myStmt.setString(9,unique);
             myStmt.executeUpdate();
             myStmt.close();
         } catch (SQLException e) {
@@ -241,6 +241,20 @@ public class AccessDatabase {
         }
         
         return full.toString().strip();
+    }
+
+    public void addNewNews(String news, int day, int month, int year){
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            
+            String tmp = String.format("INSERT INTO news " + "VALUES ('%s', %d, %d, %d)", 
+                news, day, month, year);
+            myStmt.executeUpdate(tmp);
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
     }
     /* 
     public void deleteAvailableFood(String id){
