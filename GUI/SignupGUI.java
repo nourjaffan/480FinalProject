@@ -1,4 +1,10 @@
+package GUI;
+
 import javax.swing.*;
+
+import AccountWork.Account;
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -25,6 +31,7 @@ public class SignupGUI extends JFrame implements ActionListener {
     private JButton signupButton;
     private Container container;
 
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     public SignupGUI() {
         //initialize labels
         signupLabel = new JLabel("SIGN UP");
@@ -98,10 +105,24 @@ public class SignupGUI extends JFrame implements ActionListener {
         container.add(billingNumberLabel);
         container.add(billingNumberField);
         container.add(signupButton);
+
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == signupButton){
+            System.out.println(database.getSpecificUser(emailField.getText()));
+            if(!database.getSpecificUser(emailField.getText())){
+                database.addNewUser(billingAddressField.getText(), nameField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()), 
+                    phoneField.getText(), cardNumberField.getText(), cardNameField.getText(), billingAddressField.getText());
+            }else{
+                
+                FailSignup fail = new FailSignup();
+                    fail.setBounds(10,10, 400,400);
+                    fail.setVisible(true);
+            }
+        }
         // TODO Auto-generated method stub
     }
 }
