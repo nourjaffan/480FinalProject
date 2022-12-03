@@ -1,4 +1,10 @@
+package GUI;
+
 import javax.swing.*;
+
+import AccountWork.Account;
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -8,8 +14,9 @@ public class RegularSearchGUI extends JFrame implements ActionListener {
     private JTextField searchField;
     private JButton searchButton;
     private Container container;
-
-    public RegularSearchGUI() {
+    private Account acc;
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
+    public RegularSearchGUI(Account acc) {
         welcomeLabel = new JLabel("Welcome");
         searchLabel = new JLabel("Search for Movies");
         searchField = new JTextField(15);
@@ -30,13 +37,18 @@ public class RegularSearchGUI extends JFrame implements ActionListener {
         container.add(searchLabel);
         container.add(searchField);
         container.add(searchButton);
+
+        this.acc = acc;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //if movie exists in database:
-        SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI();
-        showtimeGUI.setBounds(10, 10, 400, 400);
-        showtimeGUI.setVisible(true);
+        
+        if(database.getSpecificMovie(searchField.getText())){
+            SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
+            showtimeGUI.setBounds(10, 10, 400, 400);
+            showtimeGUI.setVisible(true);
+        }
     }
 }
