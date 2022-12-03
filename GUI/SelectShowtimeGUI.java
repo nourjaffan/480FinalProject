@@ -1,4 +1,11 @@
+package GUI;
+
 import javax.swing.*;
+import javax.xml.crypto.Data;
+
+import AccountWork.Account;
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,10 +16,13 @@ public class SelectShowtimeGUI extends JFrame implements ActionListener {
     private JButton selectButton;
     private Container container;
 
-    private String movieName = "Movie";
-    private String availableTimes[] = {"Time 1", "Time 2", "Time 3", "Time 4"};
+    private String movieName;
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
+    
 
-    public SelectShowtimeGUI() {
+    public SelectShowtimeGUI(String name, Account acc) {
+        movieName = name;
+        String availableTimes[] = database.getAllShowTimes(movieName).split("\n");
         titleLabel = new JLabel("Select Showtime");
         selectLabel = new JLabel("Showtimes for " + movieName);
 
