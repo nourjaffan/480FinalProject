@@ -7,8 +7,8 @@ import javax.mail.internet.*;
  *   @author w3spoint
  */ 
 public class SendEmail { 
-final String senderEmailId = "xwei.low@gmail.com";
-final String senderPassword = "ojlfhlpztyamwllr";
+final String senderEmailId = "sendingEmail@gmail.com";
+final String senderPassword = "twoFactorAppPass";
 final String emailSMTPserver = "smtp.gmail.com";
 final String emailSMTPPort = "587";
  
@@ -49,7 +49,7 @@ private class SMTPAuthenticator extends
 }
  
 public static void main(String[] args) {
-	new SendEmail ("nametimeman@gmail.com", 
+	new SendEmail ("receivingEmail@gmail.com", 
 			"Test Email", "Hi,\n\n This is a test email via " +
 				"Gmail server using TLS connection.");
 }
