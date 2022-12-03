@@ -1,5 +1,9 @@
+package AccountWork;
+
 import java.time.LocalDate;  
 import java.util.*;
+
+import Database.DatabaseSingleton;
 public class Account
 {
     private boolean registered = false;
@@ -11,7 +15,7 @@ public class Account
     private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
     
     
-    public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, String cardName, 
+    public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, 
                          String billingName, String billingAddress)
     {
         this.email = email;
@@ -87,9 +91,5 @@ public class Account
             //display that the user is not registered
         }
     }
-    
-    public String getPhone()
-    {
-    
-    }
+
 }
