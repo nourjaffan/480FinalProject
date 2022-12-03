@@ -1,7 +1,9 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import AccountWork.Account;
 public class LoginGUI extends JFrame implements ActionListener {
     private JPasswordField passwordField;
     private JTextField usernameField;
@@ -12,6 +14,7 @@ public class LoginGUI extends JFrame implements ActionListener {
     private JButton signupButton;
     private JButton cancelButton;
     private Container container;
+    private Account acc;
 
     public LoginGUI() {
         usernameLabel = new JLabel("Username");
@@ -47,6 +50,8 @@ public class LoginGUI extends JFrame implements ActionListener {
         container.add(guestButton);
         container.add(signupButton);
         container.add(cancelButton);
+
+        acc = new Account();
     }
 
     @Override
@@ -54,13 +59,19 @@ public class LoginGUI extends JFrame implements ActionListener {
         if(e.getSource() == loginButton) {
             String username = usernameField.getText();
             String password = String.valueOf(passwordField.getPassword());
-
-            if(username.compareTo("test") == 0 && password.compareTo("test") == 0) {
-                AccountGUI accountGUI = new AccountGUI();
-                accountGUI.setBounds(10,10, 400,400);
-                accountGUI.setVisible(true);
+            boolean loginCheck = true;
+            try{
+                acc.login(username, password);
+            }catch(Exception k){
+                loginCheck = false;
+            }
+            
+            if(loginCheck) {
+                GUIAccount GUIAccount = new GUIAccount(acc);
+                GUIAccount.setBounds(10,10, 400,400);
+                GUIAccount.setVisible(true);
             } else {
-                fail fail = new fail();
+                Fail fail = new Fail();
                 fail.setBounds(10,10, 400,400);
                 fail.setVisible(true);
             }
@@ -73,7 +84,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         }
 
         else if(e.getSource() == guestButton) {
-            RegularSearchGUI regularSearchGUI = new RegularSearchGUI();
+            RegularSearchGUI regularSearchGUI = new RegularSearchGUI(acc);
             regularSearchGUI.setBounds(10, 10, 400, 400);
             regularSearchGUI.setVisible(true);
         }
