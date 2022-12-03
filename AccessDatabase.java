@@ -1,6 +1,6 @@
+package Database;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Vector;  
 public class AccessDatabase {
     public final String DBURL;
@@ -55,7 +55,24 @@ public class AccessDatabase {
             Statement myStmt = dbConnect.createStatement();
             results = myStmt.executeQuery("SELECT * FROM " + "account");
             while(results.next()){
-                if(results.getString("Email") == email && results.getString("Password") == password){
+                if(results.getString("Email").equals(email) && results.getString("Password").equals(password)){
+                    isRegistered = true;
+                }
+            }
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        return isRegistered;
+    }
+    public boolean getSpecificUser(String email){
+        boolean isRegistered = false;
+        try {
+
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "account");
+            while(results.next()){
+                if(results.getString("Email").equals(email)){
                     isRegistered = true;
                 }
             }
@@ -98,8 +115,8 @@ public class AccessDatabase {
         }
         
     }
-    public String getSpecificMovie(String movieName){
-        StringBuffer full = new StringBuffer();
+    public boolean getSpecificMovie(String movieName){
+        boolean isThere = false;
         try {
             
             Statement myStmt = dbConnect.createStatement();
@@ -108,15 +125,14 @@ public class AccessDatabase {
             while(results.next()){
                 if(results.getString("Title").equals(movieName)){
                     
-                    full.append(results.getString("Title") + "/" + results.getString("Genre") + "/" + 
-                    results.getString("Length") + "/" + results.getString("ReleaseTime"));
+                    isThere = true;
                 }
             }
             myStmt.close();
         }catch(SQLException e){
 
         }
-        return full.toString();
+        return isThere;
     }
     public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
         
