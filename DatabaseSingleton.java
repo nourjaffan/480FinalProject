@@ -1,3 +1,4 @@
+package Database;
 import java.util.Vector;
 
 public class DatabaseSingleton {
@@ -24,6 +25,12 @@ public class DatabaseSingleton {
         access.dbConnectClose();
         return tmp;
     }
+    public boolean getSpecificUser(String email){
+        access.initializeConnection();
+        boolean tmp = access.getSpecificUser(email);
+        access.dbConnectClose();
+        return tmp;
+    }
     public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber){
         access.initializeConnection();
         access.addNewUser(name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber);
@@ -35,9 +42,9 @@ public class DatabaseSingleton {
         access.addNewMovie(title, genre, length, releaseTime);
         access.dbConnectClose();
     }
-    public String getSpecificMovie(String movieName){
+    public boolean getSpecificMovie(String movieName){
         access.initializeConnection();
-        String specificMovie = access.getSpecificMovie(movieName);
+        boolean specificMovie = access.getSpecificMovie(movieName);
         access.dbConnectClose();
         return specificMovie;
     }
