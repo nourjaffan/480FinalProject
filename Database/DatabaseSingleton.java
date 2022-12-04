@@ -43,9 +43,9 @@ public class DatabaseSingleton {
         access.dbConnectClose();
     }
 //  All movie methods
-    public void addNewMovie(String title, String genre, String length, String releaseTime){
+    public void addNewMovie(String title, String genre, String length, String releaseTime, int day, int month, int year){
         access.initializeConnection();
-        access.addNewMovie(title, genre, length, releaseTime);
+        access.addNewMovie(title, genre, length, releaseTime, day, month, year);
         access.dbConnectClose();
     }
     public boolean getSpecificMovie(String movieName){
@@ -107,15 +107,22 @@ public class DatabaseSingleton {
         access.dbConnectClose();
         return allNews;
     }
-    public boolean getSpecificSeat(String title, int seatNumber, String showTime){
+    public String getSpecificNews(String title){
         access.initializeConnection();
-        boolean available = access.getSpecificSeat(title, seatNumber, showTime);
+        String tmp = access.getSpecificNews(title);
+        access.dbConnectClose();
+        return tmp;
+    }
+//  All seat methods
+    public boolean getSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
+        access.initializeConnection();
+        boolean available = access.getSpecificSeat(title, seatNumber, showTime, day, month, year);
         access.dbConnectClose();
         return available;
     }
-    public void setSpecificSeat(String title, int seatNumber, String showTime){
+    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
         access.initializeConnection();
-        access.setSpecificSeat(title, seatNumber, showTime);
+        access.setSpecificSeat(title, seatNumber, showTime, day, month, year);
         access.dbConnectClose();
     }
 }
