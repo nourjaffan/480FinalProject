@@ -2,7 +2,6 @@ package GUI;
 
 import javax.swing.*;
 
-import AccountWork.Account;
 import Database.DatabaseSingleton;
 
 import java.awt.*;
@@ -128,6 +127,7 @@ public class SignupGUI extends JFrame implements ActionListener {
                     success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     success.setBounds(10,10, 400,400);
                     success.setVisible(true);
+                    success.setResizable(false);
                     dispose();
                 }else{
                     
