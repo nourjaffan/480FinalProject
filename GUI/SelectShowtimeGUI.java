@@ -49,6 +49,7 @@ public class SelectShowtimeGUI extends JFrame implements ActionListener {
         container.add(choices);
         container.add(selectButton);
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.acc = acc;
     }
 
