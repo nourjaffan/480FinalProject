@@ -156,14 +156,15 @@ public class AccessDatabase {
         }
         return isThere;
     }
-    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, int unique, String email){
+    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email, int unique ){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
             
-            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, %d, '%s')", 
-                seatNum, showTime, title, cost, day, month, year, unique, email);
+            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, '%s', %d)", 
+                seatNum, showTime, title, cost, day, month, year, email, unique);
+            System.out.println(tmp);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
@@ -214,7 +215,7 @@ public class AccessDatabase {
             String query = "DELETE FROM ticket WHERE UniqueTicket = ?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
 
-            myStmt.setString(9,unique);
+            myStmt.setString(1,unique);
             myStmt.executeUpdate();
             myStmt.close();
         } catch (SQLException e) {
