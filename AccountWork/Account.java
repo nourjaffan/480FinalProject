@@ -2,38 +2,30 @@ package AccountWork;
 
 import java.time.LocalDate;  
 import java.util.*;
-
 import Database.DatabaseSingleton;
-
-import SendEmails.SendEmail;
 public class Account
 {
     private boolean registered = false;
     private String email;
     private String password;
-    private double credit = 0;
-    private String name;
+
     //static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
     private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
     
     
-    public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, 
+    public void Register(String address, String name, String email, String password, String phoneNumber, String cardNumber, String cardName, 
                          String billingName, String billingAddress)
     {
         this.email = email;
         this.password = password;
-        this.name = name;
       access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber);
       this.registered = true;
       //pay 20 dollar fee
     }
     public void login(String email, String password) throws Exception{
         if(access.getSpecificUser(email, password)){
-            String[] tmp = access.getSpecificUserString(email).split("/");
-            this.name = tmp[0];
-            this.email = tmp[1];
-            this.password = tmp[2];
             registered = true;
+            this.email = email;
         }else{
             throw new Exception("The email or the password is wrong");
         }
@@ -41,7 +33,7 @@ public class Account
 
     public boolean isRegistered(){
         
-        if(access.getSpecificUser(email, password) == true){
+        if(access.getSpecificUser(this.email)){
             return true;
         }else{
             return false;
@@ -64,6 +56,7 @@ public class Account
         LocalDate time = java.time.LocalDate.now();
         Float cost = (float) 0;
         String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
+        System.out.println(tmp[0]);
         LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
@@ -86,11 +79,7 @@ public class Account
             refundAmount = cost;
         }
         //Send email with coupon with refundAmount and the date it expires
-        
-        int yearPlusOne = time.getYear() + 1;
-        new SendEmail(tmp[6], "Refund credit", "The credit that has been refunded is: " + refundAmount + ". It will expire on " + yearPlusOne 
-        + "/" + time.getMonthValue() + "/" + time.getDayOfMonth());
-        access.removeSpecificTicket(String.valueOf(uniqueTicket));
+
     }
 
     public Vector<String> displayMovieNews(){
@@ -103,12 +92,15 @@ public class Account
         }
     }
 
-    public String getName(){
-        return this.name;
-    }
-
     public String getEmail(){
         return this.email;
     }
 
+    public void setReg(){
+        this.registered = true;
+    }
+
+    public boolean getReg(){
+        return this.registered;
+    }
 }
