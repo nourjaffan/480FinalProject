@@ -70,6 +70,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                 GUIAccount GUIAccount = new GUIAccount(acc);
                 GUIAccount.setBounds(10,10, 400,400);
                 GUIAccount.setVisible(true);
+                GUIAccount.setResizable(false);
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid login");
@@ -81,6 +82,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             SignupGUI signupGUI = new SignupGUI();
             signupGUI.setBounds(10, 10, 400, 660);
             signupGUI.setVisible(true);
+            signupGUI.setResizable(false);
             dispose();
         }
 
@@ -88,6 +90,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             RegularSearchGUI regularSearchGUI = new RegularSearchGUI(acc);
             regularSearchGUI.setBounds(10, 10, 400, 400);
             regularSearchGUI.setVisible(true);
+            regularSearchGUI.setResizable(false);
             dispose();
         }
         
@@ -95,6 +98,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             CancelTicketGUI cancelTicketGUI = new CancelTicketGUI(acc);
             cancelTicketGUI.setBounds(10, 10, 400, 400);
             cancelTicketGUI.setVisible(true);
+            cancelTicketGUI.setResizable(false);
             dispose();
         }
     }
