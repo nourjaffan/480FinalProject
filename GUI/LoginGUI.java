@@ -72,9 +72,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                 GUIAccount.setVisible(true);
                 dispose();
             } else {
-                Fail fail = new Fail();
-                fail.setBounds(10,10, 400,400);
-                fail.setVisible(true);
+                JOptionPane.showMessageDialog(null, "Invalid login");
             }
         }
 
