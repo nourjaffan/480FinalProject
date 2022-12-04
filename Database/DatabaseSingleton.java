@@ -54,6 +54,12 @@ public class DatabaseSingleton {
         access.dbConnectClose();
         return specificMovie;
     }
+    public String getSpecificStringMovie(String movieName){
+        access.initializeConnection();
+        String tmp = access.getSpecificStringMovie(movieName);
+        access.dbConnectClose();
+        return tmp;
+    }
 //  All ticket methods
     public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email, int unique){
         access.initializeConnection();
