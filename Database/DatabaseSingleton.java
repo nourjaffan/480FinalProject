@@ -72,9 +72,9 @@ public class DatabaseSingleton {
         access.dbConnectClose();
     }
 //  All showtime methods
-    public void addNewShowTime(String title, String showTime, int day, int month, int year){
+    public void addNewShowTime(String title, String showTime, int day, int month, int year, int amountOfSeats){
         access.initializeConnection();
-        access.addNewShowTime(title, showTime, day, month, year);
+        access.addNewShowTime(title, showTime, day, month, year, amountOfSeats);
         access.dbConnectClose();
     }
     public String getSpecificShowTime(String title, String showTime, int day, int month, int year){
@@ -106,5 +106,10 @@ public class DatabaseSingleton {
         boolean available = access.getSpecificSeat(title, seatNumber, showTime);
         access.dbConnectClose();
         return available;
+    }
+    public void setSpecificSeat(String title, int seatNumber, String showTime){
+        access.initializeConnection();
+        access.setSpecificSeat(title, seatNumber, showTime);
+        access.dbConnectClose();
     }
 }
