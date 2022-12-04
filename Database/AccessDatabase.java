@@ -121,14 +121,14 @@ public class AccessDatabase {
         
     }
 
-    public void addNewMovie(String title, String genre, String length, String releaseTime){
+    public void addNewMovie(String title, String genre, String length, String releaseTime, int day, int month, int year){
         
         try {
             
             Statement myStmt = dbConnect.createStatement();
             
-            String tmp = String.format("INSERT INTO movie " + "VALUES ('%s', '%s', '%s', '%s')", 
-                title, genre, length, releaseTime);
+            String tmp = String.format("INSERT INTO movie " + "VALUES ('%s', '%s', '%s', '%s', %d, %d, %d)", 
+                title, genre, length, releaseTime, day, month, year);
                 
             myStmt.executeUpdate(tmp);
             myStmt.close();
@@ -251,7 +251,7 @@ public class AccessDatabase {
             String tmp = String.format("INSERT INTO showtimes " + "VALUES ('%s', '%s', %d, %d, %d)", 
                 title, showTime, day, month, year);
             for(int i = 1; i <= amountOfSeats; i++){
-                addSeats(title, i, showTime);
+                addSeats(title, i, showTime, day, month, year);
             }
             myStmt.executeUpdate(tmp);
             myStmt.close();
@@ -344,19 +344,42 @@ public class AccessDatabase {
         
         return full;
     }
-    public void addSeats(String title, int seatNumber, String showTime){
+
+    public String getSpecificNews(String title){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "news");
+            
+            while(results.next()){
+                if(results.getString("Title").equals(title)){
+                    
+                    full.append(results.getString("News") + "/" + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year"));
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+ 
+        }
+        
+        return full.toString();
+    }
+
+    public void addSeats(String title, int seatNumber, String showTime, int day, int month, int year){
         try{
             Statement myStmt = dbConnect.createStatement();
                 
-            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 1, %d, '%s')", 
-                title, seatNumber, showTime);
+            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 1, %d, '%s', %d, %d, %d)", 
+                title, seatNumber, showTime, day, month, year);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
     }
-    public boolean getSpecificSeat(String title, int seatNumber, String showTime){
+    public boolean getSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
         boolean available = true;
         try {
             
@@ -364,7 +387,9 @@ public class AccessDatabase {
             results = myStmt.executeQuery("SELECT * FROM " + "seat");
             
             while(results.next()){
-                if(results.getString("Title").equals(title) && results.getInt("SeatNumber") == seatNumber && results.getString("ShowTime").equals(showTime)){
+                if(results.getString("Title").equals(title) && results.getInt("SeatNumber") == seatNumber 
+                && results.getString("ShowTime").equals(showTime) && results.getInt("Day") == day && results.getInt("Month") == month
+                && results.getInt("Year") == year){
                     
                     available = results.getBoolean("Vacant");
                 }
@@ -376,13 +401,16 @@ public class AccessDatabase {
         return available;
     }
     
-    public void setSpecificSeat(String title, int seatNumber, String showTime){
+    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
         try{
-            String query = "UPDATE Seat SET Vacant = 0 WHERE Title=? AND SeatNumber=? AND ShowTime=?";
+            String query = "UPDATE Seat SET Vacant = 0 WHERE Title=? AND SeatNumber=? AND ShowTime=? AND Day=? AND Month=? AND Year=?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
             myStmt.setString(1,title);
             myStmt.setString(2, String.valueOf(seatNumber));
             myStmt.setString(3,showTime);
+            myStmt.setString(4, String.valueOf(day));
+            myStmt.setString(5, String.valueOf(month));
+            myStmt.setString(6, String.valueOf(year));
             myStmt.executeUpdate();
             myStmt.close();
         }catch(SQLException e){
