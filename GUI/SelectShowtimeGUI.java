@@ -18,7 +18,7 @@ public class SelectShowtimeGUI extends JFrame implements ActionListener {
 
     private String movieName;
     private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
-    
+    private Account acc;
 
     public SelectShowtimeGUI(String name, Account acc) {
         movieName = name;
@@ -48,10 +48,19 @@ public class SelectShowtimeGUI extends JFrame implements ActionListener {
         container.add(selectLabel);
         container.add(choices);
         container.add(selectButton);
+
+        this.acc = acc;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String[] tmp = choices.getSelectedItem().toString().split("/");
+
+        SeatingGUI frame = new SeatingGUI(tmp[3], tmp[4], acc);
+        frame.setTitle("Seating");
+        frame.setVisible(true);
+        frame.setBounds(10,10, 680,400);
+        frame.setResizable(false);
         // TODO Auto-generated method stub
         
     }
