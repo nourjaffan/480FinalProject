@@ -20,6 +20,9 @@ CREATE TABLE movie
     Genre         varchar(45),
     Length        varchar(45),
     ReleaseTime       varchar(45),
+    Day           int,
+    Month         int,
+    Year          int,
     PRIMARY KEY (Title)
     );
 
@@ -35,4 +38,3 @@ CREATE TABLE seat
     );
     
 DROP TABLE IF EXISTS test;
-
