@@ -7,36 +7,34 @@ import Database.DatabaseSingleton;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 public class GUIAccount extends JFrame implements ActionListener{
     
     private JLabel welcomeLabel;
     private JLabel newsLabel;
-    private JLabel announcement1Label;
-    private JLabel announcement2Label;
-    private JLabel announcement3Label;
+    private Vector<JLabel> announcementLabel = new Vector<JLabel>();
     private JLabel searchLabel;
     private JTextField searchField;
     private JButton searchButton;
     private Container container;
 
-    private String name = "User";   //hardcoded fields; must be replaced with gets
-    private String movie1 = "Movie 1";
-    private String date1 = "Date 1";
-    private String movie2 = "Movie 2";
-    private String date2 = "Date 2";
-    private String movie3 = "Movie 3";
-    private String date3 = "Date 3";
 
     private Account acc;
     private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     public GUIAccount(Account acc) {
         //initiallize labels
-        welcomeLabel = new JLabel("Welcome " + name);
+        welcomeLabel = new JLabel("Welcome " + acc.getName());
         newsLabel = new JLabel("NEWS");
-        announcement1Label = new JLabel(movie1 + " in theatres on " + date1);
-        announcement2Label = new JLabel(movie2 + " in theatres on " + date2);
-        announcement3Label = new JLabel(movie3 + " in theatres on " + date3);
+        boolean checkIfNews = false;
+        Vector<String> newsList = database.getAllNews();
+        for(String news : newsList){
+            JLabel announceTmp = new JLabel(news);
+            announcementLabel.add(announceTmp);
+            checkIfNews = true;
+            
+        }
+
         searchLabel = new JLabel("Search for Movies");
 
         //initiallize field and buttons
@@ -50,12 +48,15 @@ public class GUIAccount extends JFrame implements ActionListener{
         
         newsLabel.setBounds(0, 0, 300, 30);
         newsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        announcement1Label.setBounds(0, 30, 300, 30);
-        announcement1Label.setHorizontalAlignment(SwingConstants.CENTER);
-        announcement2Label.setBounds(0, 60, 300, 30);
-        announcement2Label.setHorizontalAlignment(SwingConstants.CENTER);
-        announcement3Label.setBounds(0, 90, 300, 30);
-        announcement3Label.setHorizontalAlignment(SwingConstants.CENTER);
+        int yAxis = 30;
+        if(checkIfNews){
+            for(JLabel label : announcementLabel){
+                label.setBounds(0, yAxis, 300, 30);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                yAxis += 30;
+            }
+        }
+
         searchLabel.setBounds(125, 210, 150, 30);
         searchLabel.setHorizontalAlignment(SwingConstants.CENTER);
         searchField.setBounds(125, 240, 150, 30);
@@ -66,9 +67,12 @@ public class GUIAccount extends JFrame implements ActionListener{
         newsPanel.setLayout(null);
         newsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         newsPanel.add(newsLabel);
-        newsPanel.add(announcement1Label);
-        newsPanel.add(announcement2Label);
-        newsPanel.add(announcement3Label);
+        if(checkIfNews){
+            for(JLabel label : announcementLabel){
+                newsPanel.add(label);
+            }
+        }
+        
         newsPanel.setBounds(50, 60, 300, 130);
 
         //add everything
