@@ -49,14 +49,21 @@ public class CancelTicketGUI extends JFrame implements ActionListener {
         container.add(cancelButton);
 
         cancelButton.addActionListener(this);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.acc = acc;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        acc.cancelTheTicket(Integer.parseInt(ticketNumField.getText()), emailField.getText());
-        
+        if(ticketNumField.getText().isEmpty() || emailField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please enter all info");
+        }else{
+            SuccessfulCancel success = new SuccessfulCancel();
+            success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            success.setBounds(10,10, 400,400);
+            success.setVisible(true);
+            acc.cancelTheTicket(Integer.parseInt(ticketNumField.getText()), emailField.getText());
+        }
         // TODO Auto-generated method stub
         
     }
