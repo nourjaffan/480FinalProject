@@ -1,3 +1,5 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -81,7 +83,10 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        TicketPaymentGUI confirm = new TicketPaymentGUI(this.emailField.getText());
+        confirm.setBounds(10, 10, 400, 400);
+        confirm.setVisible(true);
+        dispose();
         
     }
 }
