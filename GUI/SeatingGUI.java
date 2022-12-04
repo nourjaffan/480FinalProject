@@ -82,12 +82,14 @@ public class SeatingGUI extends JFrame implements ActionListener {
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
+                    frame.setResizable(false);
                     dispose();
                 }else{
                     RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
+                    frame.setResizable(false);
                     dispose();
                 }
             }
@@ -108,13 +110,4 @@ public class SeatingGUI extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        
-        SeatingGUI frame = new SeatingGUI("batman", "yea", new Account());
-        frame.setTitle("Login");
-        frame.setVisible(true);
-        frame.setBounds(10,10, 680,400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-    }
 }
