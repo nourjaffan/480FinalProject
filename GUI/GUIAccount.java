@@ -17,15 +17,17 @@ public class GUIAccount extends JFrame implements ActionListener{
     private JLabel searchLabel;
     private JTextField searchField;
     private JButton searchButton;
+    private JLabel failSearch;
     private Container container;
-
 
     private Account acc;
     private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
+
     public GUIAccount(Account acc) {
         //initiallize labels
         welcomeLabel = new JLabel("Welcome " + acc.getName());
         newsLabel = new JLabel("NEWS");
+        failSearch = new JLabel();
         boolean checkIfNews = false;
         Vector<String> newsList = database.getAllNews();
         for(String news : newsList){
@@ -48,6 +50,8 @@ public class GUIAccount extends JFrame implements ActionListener{
         
         newsLabel.setBounds(0, 0, 300, 30);
         newsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        
         int yAxis = 30;
         if(checkIfNews){
             for(JLabel label : announcementLabel){
@@ -62,6 +66,9 @@ public class GUIAccount extends JFrame implements ActionListener{
         searchField.setBounds(125, 240, 150, 30);
         searchButton.setBounds(125, 280, 150, 30);
 
+        failSearch.setForeground(Color.red);
+        failSearch.setBounds(125, 310, 150, 30);
+        failSearch.setHorizontalAlignment(SwingConstants.CENTER);
         //create news panel
         JPanel newsPanel = new JPanel();
         newsPanel.setLayout(null);
@@ -83,15 +90,23 @@ public class GUIAccount extends JFrame implements ActionListener{
         container.add(searchLabel);
         container.add(searchField);
         container.add(searchButton);
+        container.add(failSearch);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.acc = acc;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //if movie exists in database:
-        if(!((database.getSpecificMovie(searchField.getText())).isEmpty())){
+        if(database.getSpecificMovie(searchField.getText())){
             SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
             showtimeGUI.setBounds(10, 10, 400, 400);
             showtimeGUI.setVisible(true);
+            dispose();
+        }else{
+            failSearch.setText("No movie was found");
+            
         }
     }
 }
