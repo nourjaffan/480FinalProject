@@ -22,7 +22,7 @@ CREATE TABLE ticket
     SeatNumber            int,
     ShowTime              varchar(50),
     Title                 varchar(50),
-    Cost                  float,
+    Cost                  double,
     Day                   int,
     Month                 int,
     Year                  int,
