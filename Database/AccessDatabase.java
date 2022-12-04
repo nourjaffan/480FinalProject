@@ -156,6 +156,26 @@ public class AccessDatabase {
         }
         return isThere;
     }
+    public String getSpecificStringMovie(String movieName){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "movie");
+            
+            while(results.next()){
+                if(results.getString("Title").equals(movieName)){
+                    
+                    full.append(results.getString("Title") + "/" + results.getString("Genre") + "/" + results.getString("Length") + "/" +
+                    results.getString("ReleaseTime") + "/" + results.getInt("Day") + results.getInt("Month") + "/" + results.getInt("Year"));
+                }
+            }
+            myStmt.close();
+        }catch(SQLException e){
+
+        }
+        return full.toString();
+    }
     public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email, int unique ){
         
         try {
@@ -328,7 +348,7 @@ public class AccessDatabase {
         try{
             Statement myStmt = dbConnect.createStatement();
                 
-            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 0, %d, '%s')", 
+            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 1, %d, '%s')", 
                 title, seatNumber, showTime);
             myStmt.executeUpdate(tmp);
             myStmt.close();
@@ -358,7 +378,7 @@ public class AccessDatabase {
     
     public void setSpecificSeat(String title, int seatNumber, String showTime){
         try{
-            String query = "UPDATE Seat SET Vacant = 1 WHERE Title=? AND SeatNumber=? AND ShowTime=?";
+            String query = "UPDATE Seat SET Vacant = 0 WHERE Title=? AND SeatNumber=? AND ShowTime=?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
             myStmt.setString(1,title);
             myStmt.setString(2, String.valueOf(seatNumber));
