@@ -4,12 +4,6 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-/**
- * This class is used to send simple email
- * via Gmail server using TLS connection.
- * 
- * @author w3spoint
- */
 public class SendEmail {
 	final String senderEmailId = "xwei.low@gmail.com";
 	final String senderPassword = "ojlfhlpztyamwllr";
