@@ -88,7 +88,7 @@ public class GUIAccount extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         //if movie exists in database:
-        if(database.getSpecificMovie(searchField.getText())){
+        if(!((database.getSpecificMovie(searchField.getText())).isEmpty())){
             SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
             showtimeGUI.setBounds(10, 10, 400, 400);
             showtimeGUI.setVisible(true);
