@@ -67,6 +67,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
         this.showTime = showTime;
         this.acc = acc;
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
     }
 
@@ -81,12 +82,13 @@ public class SeatingGUI extends JFrame implements ActionListener {
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
-
+                    dispose();
                 }else{
                     RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
+                    dispose();
                 }
             }
         }
