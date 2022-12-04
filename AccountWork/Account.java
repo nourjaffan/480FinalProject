@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import Database.DatabaseSingleton;
+
+import SendEmails.SendEmail;
 public class Account
 {
     private boolean registered = false;
@@ -49,11 +51,11 @@ public class Account
 
     public void addTicket(Ticket ticket){
         access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
-                            ticket.getUniqueTicket(), email);
+                            email, ticket.getUniqueTicket());
     }
     public void addTicket(Ticket ticket, String guestEmail){
         access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
-                            ticket.getUniqueTicket(), guestEmail);
+                            guestEmail, ticket.getUniqueTicket());
     }
     public void cancelTheTicket(int uniqueTicket, String email){
         if(access.getSpecificTicket(uniqueTicket, email) == null){  //If there is no ticket found in database return nothing there
@@ -84,7 +86,11 @@ public class Account
             refundAmount = cost;
         }
         //Send email with coupon with refundAmount and the date it expires
-
+        
+        int yearPlusOne = time.getYear() + 1;
+        new SendEmail(tmp[6], "Refund credit", "The credit that has been refunded is: " + refundAmount + ". It will expire on " + yearPlusOne 
+        + "/" + time.getMonthValue() + "/" + time.getDayOfMonth());
+        access.removeSpecificTicket(String.valueOf(uniqueTicket));
     }
 
     public Vector<String> displayMovieNews(){
@@ -99,6 +105,10 @@ public class Account
 
     public String getName(){
         return this.name;
+    }
+
+    public String getEmail(){
+        return this.email;
     }
 
 }
