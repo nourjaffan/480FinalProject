@@ -223,13 +223,16 @@ public class AccessDatabase {
         }
     }
 
-    public void addNewShowTime(String title, String showTime, int day, int month, int year){
+    public void addNewShowTime(String title, String showTime, int day, int month, int year, int amountOfSeats){
         try {
             
             Statement myStmt = dbConnect.createStatement();
             
             String tmp = String.format("INSERT INTO showtimes " + "VALUES ('%s', '%s', %d, %d, %d)", 
                 title, showTime, day, month, year);
+            for(int i = 1; i <= amountOfSeats; i++){
+                addSeats(title, i, showTime);
+            }
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
@@ -321,7 +324,18 @@ public class AccessDatabase {
         
         return full;
     }
-
+    public void addSeats(String title, int seatNumber, String showTime){
+        try{
+            Statement myStmt = dbConnect.createStatement();
+                
+            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 0, %d, '%s')", 
+                title, seatNumber, showTime);
+            myStmt.executeUpdate(tmp);
+            myStmt.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
     public boolean getSpecificSeat(String title, int seatNumber, String showTime){
         boolean available = true;
         try {
@@ -341,6 +355,21 @@ public class AccessDatabase {
         }
         return available;
     }
+    
+    public void setSpecificSeat(String title, int seatNumber, String showTime){
+        try{
+            String query = "UPDATE Seat SET Vacant = 1 WHERE Title=? AND SeatNumber=? AND ShowTime=?";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+            myStmt.setString(1,title);
+            myStmt.setString(2, String.valueOf(seatNumber));
+            myStmt.setString(3,showTime);
+            myStmt.executeUpdate();
+            myStmt.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     /* 
     public void deleteAvailableFood(String id){
         try {
