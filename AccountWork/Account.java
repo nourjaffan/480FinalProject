@@ -10,7 +10,7 @@ public class Account
     private String email;
     private String password;
     private double credit = 0;
-
+    private String name;
     //static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
     private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
     
@@ -20,12 +20,17 @@ public class Account
     {
         this.email = email;
         this.password = password;
+        this.name = name;
       access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber);
       this.registered = true;
       //pay 20 dollar fee
     }
     public void login(String email, String password) throws Exception{
         if(access.getSpecificUser(email, password)){
+            String[] tmp = access.getSpecificUserString(email).split("/");
+            this.name = tmp[0];
+            this.email = tmp[1];
+            this.password = tmp[2];
             registered = true;
         }else{
             throw new Exception("The email or the password is wrong");
@@ -90,6 +95,10 @@ public class Account
             return new Vector<>();
             //display that the user is not registered
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
 }
