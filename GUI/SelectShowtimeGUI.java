@@ -57,11 +57,12 @@ public class SelectShowtimeGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String[] tmp = choices.getSelectedItem().toString().split("/");
 
-        SeatingGUI frame = new SeatingGUI(tmp[3], tmp[4], acc);
+        SeatingGUI frame = new SeatingGUI(tmp[3], tmp[4], acc, Integer.parseInt(tmp[0]), Integer.parseInt(tmp[1]), Integer.parseInt(tmp[2]));
         frame.setTitle("Seating");
         frame.setVisible(true);
         frame.setBounds(10,10, 680,400);
         frame.setResizable(false);
+        dispose();
         // TODO Auto-generated method stub
         
     }
