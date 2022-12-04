@@ -28,6 +28,7 @@ public class SignupGUI extends JFrame implements ActionListener {
     private JLabel billingNumberLabel;
     private JTextField billingNumberField;
 
+    private JLabel emailUsedLabel;
     private JButton signupButton;
     private Container container;
 
@@ -45,6 +46,7 @@ public class SignupGUI extends JFrame implements ActionListener {
         billingAddressLabel = new JLabel("Billing Address");
         billingNumberLabel = new JLabel("Billing Number");
 
+        emailUsedLabel = new JLabel();
         //initialize fields
         emailField = new JTextField(15);
         passwordField = new JPasswordField(15);
@@ -105,27 +107,33 @@ public class SignupGUI extends JFrame implements ActionListener {
         container.add(billingNumberLabel);
         container.add(billingNumberField);
         container.add(signupButton);
-
+        
+        emailUsedLabel.setForeground(Color.red);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == signupButton){
-            
-            if(!database.getSpecificUser(emailField.getText())){
-                database.addNewUser(nameField.getText(), billingAddressField.getText(), cardNumberField.getText(), cardNameField.getText(), 
-                billingAddressField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()), phoneField.getText());
-                SuccessfulSignup success = new SuccessfulSignup();
-                success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                success.setBounds(10,10, 400,400);
-                success.setVisible(true);
-                dispose();
-            }else{
+        if(nameField.getText().isEmpty() || billingAddressField.getText().isEmpty() || cardNumberField.getText().isEmpty() || cardNameField.getText().isEmpty() ||
+            emailField.getText().isEmpty() || String.valueOf(passwordField.getPassword()).isEmpty() || phoneField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please enter all info");
+        }else{
+            if(e.getSource() == signupButton){
                 
-                FailSignup fail = new FailSignup();
-                fail.setBounds(10,10, 400,400);
-                fail.setVisible(true);
+                if(!database.getSpecificUser(emailField.getText())){
+                    database.addNewUser(nameField.getText(), billingAddressField.getText(), cardNumberField.getText(), cardNameField.getText(), 
+                    billingAddressField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()), phoneField.getText());
+                    SuccessfulSignup success = new SuccessfulSignup();
+                    success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    success.setBounds(10,10, 400,400);
+                    success.setVisible(true);
+                    dispose();
+                }else{
+                    
+                    emailUsedLabel.setText("Email has been used");
+                    
+                }
             }
         }
         
