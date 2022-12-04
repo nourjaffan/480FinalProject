@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import SendEmails.SendEmail;
+
 public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     
     private JLabel titleLabel;
@@ -22,14 +24,16 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     private JButton confirmButton;
     private Container container;
 
-    private String movie = "Movie";
-    private String theatre = "Theatre";
-    private String showtime = "Showtime";
-    private String seat = "Seat Num";
+    private String movie;;
+    private String showtime;
+    private int seat;
 
-    public RegularTicketPaymentGUI() {
+    public RegularTicketPaymentGUI(int seatNum, String showTime, String title) {
+        this.movie = title;
+        this.showtime = showTime;
+        this.seat = seatNum;
         titleLabel = new JLabel("Confirm Ticket Purchase");
-        info = new JLabel(movie + " in " + seat + " at " + theatre + " on " + showtime);
+        info = new JLabel("watching "+ title + " in seat number " + seatNum + " at " + showtime);
         emailLabel = new JLabel("Email");
         billingLabel = new JLabel("BILLING INFO");
         cardNumberLabel = new JLabel("Card Number");
@@ -83,9 +87,7 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TicketPaymentGUI confirm = new TicketPaymentGUI(this.emailField.getText());
-        confirm.setBounds(10, 10, 400, 400);
-        confirm.setVisible(true);
+        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $15 \n\n please enjoy "+ this.movie +" at "+this.showtime +" in seat number " + this.seat);
         dispose();
         
     }
