@@ -112,17 +112,22 @@ public class SignupGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == signupButton){
-            System.out.println(database.getSpecificUser(emailField.getText()));
+            
             if(!database.getSpecificUser(emailField.getText())){
-                database.addNewUser(billingAddressField.getText(), nameField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()), 
-                    phoneField.getText(), cardNumberField.getText(), cardNameField.getText(), billingAddressField.getText());
+                database.addNewUser(nameField.getText(), billingAddressField.getText(), cardNumberField.getText(), cardNameField.getText(), 
+                billingAddressField.getText(), emailField.getText(), String.valueOf(passwordField.getPassword()), phoneField.getText());
+                SuccessfulSignup success = new SuccessfulSignup();
+                success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                success.setBounds(10,10, 400,400);
+                success.setVisible(true);
+                dispose();
             }else{
                 
                 FailSignup fail = new FailSignup();
-                    fail.setBounds(10,10, 400,400);
-                    fail.setVisible(true);
+                fail.setBounds(10,10, 400,400);
+                fail.setVisible(true);
             }
         }
-        // TODO Auto-generated method stub
+        
     }
 }
