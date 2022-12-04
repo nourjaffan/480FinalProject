@@ -17,7 +17,7 @@ public class LoginGUI extends JFrame implements ActionListener {
     private Account acc;
 
     public LoginGUI() {
-        usernameLabel = new JLabel("Username");
+        usernameLabel = new JLabel("Email");
         passwordLabel = new JLabel("Password");
         loginButton = new JButton("Login");
         guestButton = new JButton("Proceed As Guest");
