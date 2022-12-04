@@ -55,7 +55,7 @@ public class DatabaseSingleton {
         return specificMovie;
     }
 //  All ticket methods
-    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
+    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, int unique, String email){
         access.initializeConnection();
         access.addNewTicket(seatNum, showTime, title, cost, day, month, year, unique, email);
         access.dbConnectClose();
