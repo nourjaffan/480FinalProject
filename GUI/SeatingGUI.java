@@ -1,4 +1,9 @@
+package GUI;
+
 import javax.swing.*;
+
+import AccountWork.Account;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -9,8 +14,8 @@ public class SeatingGUI extends JFrame implements ActionListener {
     private Container container;
     private JButton[] buttons = new JButton[40];
     private String selected;
-
-    public SeatingGUI() {
+    private Account acc;
+    public SeatingGUI(String title, String showtime, Account acc) {
         titleLabel = new JLabel("Select Seat");
         titleLabel.setBounds(0,10,650,30);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -54,7 +59,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
             }
         }
     }
-
+/*
     public static void main(String[] args) {
         SeatingGUI frame = new SeatingGUI();
         frame.setTitle("Login");
@@ -63,4 +68,5 @@ public class SeatingGUI extends JFrame implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
     }
+    */
 }
