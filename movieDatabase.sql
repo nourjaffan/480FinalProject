@@ -34,6 +34,9 @@ CREATE TABLE seat
     Vacant        BOOLEAN,
     SeatNumber    int,
     ShowTime      varchar(45),
+    Day           int,
+    Month         int,
+    Year          int,
     PRIMARY KEY (SeatNumber, Title, ShowTime)
     );
     
