@@ -82,6 +82,28 @@ public class AccessDatabase {
         }
         return isRegistered;
     }
+    public String getSpecificUserString(String email){
+        StringBuffer full = new StringBuffer();
+        try {
+            
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM " + "account");
+            
+            while(results.next()){
+                
+                if(results.getString("email").equals(email)){
+
+                        full.append(results.getString("Name") + "/" + results.getString("Email") + "/" + results.getString("Password"));
+
+                }
+            }
+            myStmt.close();
+            
+        }catch(SQLException e){
+
+        }
+        return full.toString();
+    }
     public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber){
         
         try {
@@ -134,7 +156,7 @@ public class AccessDatabase {
         }
         return isThere;
     }
-    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, int unique, String email){
+    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
         
         try {
             
@@ -281,13 +303,13 @@ public class AccessDatabase {
         try {
             
             Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
+            results = myStmt.executeQuery("SELECT * FROM " + "news");
             
             while(results.next()){
                 LocalDate tmpDate = LocalDate.of(results.getInt("Year"), results.getInt("Month"), results.getInt("Day"));
-                if(tmpDate.isBefore(theDate)){
-                    full.add(results.getString("News") + "/" + tmpDate.toString());
+                if(tmpDate.isAfter(theDate)){
                     
+                    full.add(results.getString("News") + "/" + tmpDate.toString());
                 }
             }
             myStmt.close();
