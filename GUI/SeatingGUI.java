@@ -1,4 +1,10 @@
+package GUI;
+
 import javax.swing.*;
+
+import AccountWork.Account;
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,11 +13,16 @@ public class SeatingGUI extends JFrame implements ActionListener {
     private JLabel titleLabel;
     private JButton confirmButton;
     private Container container;
-    private JButton[] buttons = new JButton[40];
+    private final int AMOUNTOFSEATS = 40;
+    private JButton[] buttons = new JButton[AMOUNTOFSEATS];
     private int selected = -1;
     private Color defaultColor;
+    private String title;
+    private String showTime;
+    private Account acc;
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
 
-    public SeatingGUI() {
+    public SeatingGUI(String title, String showTime, Account acc) {
         titleLabel = new JLabel("Select Seat");
         titleLabel.setBounds(0,10,650,30);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -28,7 +39,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
 
         int x = 30;
         int y = 30;
-        for(int i = 0; i < 40; i++) {
+        for(int i = 0; i < AMOUNTOFSEATS; i++) {
             
             //NEED CHECK FOR SELECTED SEAT AVAILABLE
 
@@ -46,8 +57,17 @@ public class SeatingGUI extends JFrame implements ActionListener {
 
             seatButton.setBounds(x, y, 60, 30);
             container.add(seatButton);
+            if(!database.getSpecificSeat(title, (i+1), showTime)){
+                seatButton.setBackground(Color.GREEN);
+                seatButton.setEnabled(false);
+            }
             x += 70;
         }
+        this.title = title;
+        this.showTime = showTime;
+        this.acc = acc;
+
+        
     }
 
     @Override
@@ -56,29 +76,39 @@ public class SeatingGUI extends JFrame implements ActionListener {
             if(selected == -1) {
                 //do nothing
             } else {    //NEED CHECK FOR REGISTERED USER AND WHETHER SELECTED SEAT IS AVAILABLE
-                System.out.println("here");
-                RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI();
-                frame.setTitle("Payment");
-                frame.setVisible(true);
-                frame.setBounds(10,10, 400,500);
+                if(acc.isRegistered()){
+                    TicketPaymentGUI frame = new TicketPaymentGUI(acc, selected, title, showTime);
+                    frame.setTitle("Payment");
+                    frame.setVisible(true);
+                    frame.setBounds(10,10, 400,500);
+
+                }else{
+                    RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime);
+                    frame.setTitle("Payment");
+                    frame.setVisible(true);
+                    frame.setBounds(10,10, 400,500);
+                }
             }
         }
         else {
+            
+            
             for(JButton b : buttons) {
+                
                 if(b.getBackground() == Color.GREEN) {
                     b.setBackground(defaultColor);
                 }
                 if(b == e.getSource()) {
                     b.setBackground(Color.GREEN);
                     selected = Integer.parseInt(b.getText().substring(2));
-                    System.out.println(selected);
                 }
             }
         }
     }
 
     public static void main(String[] args) {
-        SeatingGUI frame = new SeatingGUI();
+        
+        SeatingGUI frame = new SeatingGUI("batman", "yea", new Account());
         frame.setTitle("Login");
         frame.setVisible(true);
         frame.setBounds(10,10, 680,400);
