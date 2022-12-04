@@ -22,7 +22,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
     private Account acc;
     private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
 
-    public SeatingGUI(String title, String showTime, Account acc) {
+    public SeatingGUI(String title, String showTime, Account acc, int day, int month, int year) {
         titleLabel = new JLabel("Select Seat");
         titleLabel.setBounds(0,10,650,30);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -57,7 +57,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
 
             seatButton.setBounds(x, y, 60, 30);
             container.add(seatButton);
-            if(!database.getSpecificSeat(title, (i+1), showTime)){
+            if(!database.getSpecificSeat(title, (i+1), showTime, day, month, year)){
                 seatButton.setBackground(Color.GREEN);
                 seatButton.setEnabled(false);
             }
