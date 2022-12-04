@@ -156,7 +156,7 @@ public class AccessDatabase {
         }
         return isThere;
     }
-    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
+    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, int unique, String email){
         
         try {
             
@@ -184,7 +184,7 @@ public class AccessDatabase {
                 if(results.getInt("UniqueTicket") == unique && results.getString("Email").equals(email)){
 
                         boolean registered = false;
-                        full.append(results.getFloat("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
+                        full.append(results.getDouble("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
                         + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/" + results.getString("Email") + "/");
                         
                         ResultSet checkRegistered = myStmt.executeQuery("SELECT * FROM " + "account");
@@ -315,7 +315,7 @@ public class AccessDatabase {
             myStmt.close();
             
         }catch(SQLException e){
-
+ 
         }
         
         return full;
