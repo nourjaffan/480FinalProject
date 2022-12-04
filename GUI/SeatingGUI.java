@@ -77,7 +77,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
             if(selected == -1) {
                 //do nothing
             } else {    //NEED CHECK FOR REGISTERED USER AND WHETHER SELECTED SEAT IS AVAILABLE
-                if(acc.isRegistered()){
+                if(acc.getReg()){
                     TicketPaymentGUI frame = new TicketPaymentGUI(acc, selected, title, showTime);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
