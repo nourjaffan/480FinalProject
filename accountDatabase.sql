@@ -42,7 +42,7 @@ CREATE TABLE reciept
 DROP TABLE IF EXISTS news;
 CREATE TABLE news
     (
-    News          varchar(500),
+    Title          varchar(50),
     Day           int,
     Month         int,
     Year          int,
