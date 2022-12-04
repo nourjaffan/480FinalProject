@@ -134,7 +134,7 @@ public class AccessDatabase {
         }
         return isThere;
     }
-    public void addNewTicket(int seatNum, String showTime, String title, float cost, int day, int month, int year, int unique, String email){
+    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, int unique, String email){
         
         try {
             
