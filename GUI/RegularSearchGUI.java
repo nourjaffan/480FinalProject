@@ -7,6 +7,7 @@ import Database.DatabaseSingleton;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 
 public class RegularSearchGUI extends JFrame implements ActionListener {
     private JLabel welcomeLabel;
@@ -53,11 +54,22 @@ public class RegularSearchGUI extends JFrame implements ActionListener {
         //if movie exists in database:
         
         if(database.getSpecificMovie(searchField.getText())){
-            SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
-            showtimeGUI.setBounds(10, 10, 400, 400);
-            showtimeGUI.setVisible(true);
-            showtimeGUI.setResizable(false);
-            dispose();
+            LocalDate today = LocalDate.now();
+            String[] tmp = database.getSpecificStringMovie(searchField.getText()).split("/");
+            LocalDate theRelease = LocalDate.of(Integer.parseInt(tmp[6]), Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]));
+            System.out.println(theRelease.getDayOfYear());
+            if( theRelease.getDayOfYear() - today.getDayOfYear() <= 3){
+                SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
+                showtimeGUI.setBounds(10, 10, 400, 400);
+                showtimeGUI.setVisible(true);
+                showtimeGUI.setResizable(false);
+                dispose();
+            }else{
+                failSearch.setText("No movie was found");
+                
+            }
+
+            
         }else{
             failSearch.setText("No movie was found");
             
