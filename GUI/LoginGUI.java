@@ -70,6 +70,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                 GUIAccount GUIAccount = new GUIAccount(acc);
                 GUIAccount.setBounds(10,10, 400,400);
                 GUIAccount.setVisible(true);
+                dispose();
             } else {
                 Fail fail = new Fail();
                 fail.setBounds(10,10, 400,400);
@@ -78,36 +79,26 @@ public class LoginGUI extends JFrame implements ActionListener {
         }
 
         else if(e.getSource() == signupButton) {
+            setVisible(false);
             SignupGUI signupGUI = new SignupGUI();
             signupGUI.setBounds(10, 10, 400, 660);
             signupGUI.setVisible(true);
+            dispose();
         }
 
         else if(e.getSource() == guestButton) {
             RegularSearchGUI regularSearchGUI = new RegularSearchGUI(acc);
             regularSearchGUI.setBounds(10, 10, 400, 400);
             regularSearchGUI.setVisible(true);
+            dispose();
         }
         
         else if(e.getSource() == cancelButton) {
-            CancelTicketGUI cancelTicketGUI = new CancelTicketGUI();
+            CancelTicketGUI cancelTicketGUI = new CancelTicketGUI(acc);
             cancelTicketGUI.setBounds(10, 10, 400, 400);
             cancelTicketGUI.setVisible(true);
+            dispose();
         }
     }
 
-    public static void main(String[] args) {
-        LoginGUI frame = new LoginGUI();
-        frame.setTitle("Login");
-        frame.setVisible(true);
-        frame.setBounds(10,10, 400,400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        // JFrame frame = new JFrame("Login");
-        // frame.getContentPane().add(gui);
-        // frame.setSize(400,400);
-        // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // frame.setLocationRelativeTo(null);
-        // frame.setVisible(true);
-    }
 }
