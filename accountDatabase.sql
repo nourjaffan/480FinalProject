@@ -46,5 +46,5 @@ CREATE TABLE news
     Day           int,
     Month         int,
     Year          int,
-    PRIMARY KEY(News)
+    PRIMARY KEY(Title)
     );  
