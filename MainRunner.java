@@ -8,7 +8,7 @@ public class MainRunner {
         frame.setTitle("Login");
         frame.setVisible(true);
         frame.setBounds(10,10, 400,400);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
     }
 }
