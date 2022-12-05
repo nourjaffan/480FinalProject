@@ -57,9 +57,9 @@ public class RegularSearchGUI extends JFrame implements ActionListener {
             LocalDate today = LocalDate.now();
             String[] tmp = database.getSpecificStringMovie(searchField.getText()).split("/");
             LocalDate theRelease = LocalDate.of(Integer.parseInt(tmp[6]), Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]));
-            System.out.println(theRelease.getDayOfYear());
+            
             if( theRelease.getDayOfYear() - today.getDayOfYear() <= 3){
-                SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
+                SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc, true);
                 showtimeGUI.setBounds(10, 10, 400, 400);
                 showtimeGUI.setVisible(true);
                 showtimeGUI.setResizable(false);
