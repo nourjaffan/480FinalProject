@@ -184,7 +184,6 @@ public class AccessDatabase {
             
             String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, '%s', %d)", 
                 seatNum, showTime, title, cost, day, month, year, email, unique);
-            System.out.println(tmp);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
@@ -398,6 +397,7 @@ public class AccessDatabase {
         }catch(SQLException e){
 
         }
+        
         return available;
     }
     
