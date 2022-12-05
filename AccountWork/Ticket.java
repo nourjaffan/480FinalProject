@@ -51,6 +51,7 @@ public class Ticket{
 
 public class ticketReciept
 {
+    
   private int uniqueNumber;
   
   public ticketReciept(int number)
@@ -62,4 +63,5 @@ public class ticketReciept
   {
     return uniqueNumber;
   }
+    
 }
