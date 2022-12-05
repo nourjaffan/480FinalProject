@@ -5,8 +5,8 @@ import javax.swing.*;
 import SendEmails.SendEmail;
 import AccountWork.Account;
 import Database.DatabaseSingleton;
-import Payment.PaymentAnnual;
 import Payment.PaymentImplement;
+import Payment.PaymentTicket;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -58,16 +58,20 @@ public class TicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.acc.getEmail(), 1);
+        int tickNum = 1;
+        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.acc.getEmail(), tickNum);
         PaymentImplement pay = new PaymentImplement(){};
-        pay.setPaymentStrategy(new PaymentAnnual());
+        pay.setPaymentStrategy(new PaymentTicket());
         int cost = pay.performPayment();
-        SendEmail reciept = new SendEmail(this.acc.getEmail(), "Ticket Reciept", "Ticket cost = $"+ cost +" \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + "day of the month in seat " + this.seat);
+        
+        access.setSpecificSeat(movie, seat, showtime, day, month, year);
+        SendEmail reciept = new SendEmail(this.acc.getEmail(), "Ticket Reciept", "Ticket cost = $"+ cost +" \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat 
+                                            + "\n" + "Your unique ticket number is " + tickNum);
         dispose();
     }
-/* 
+ /*
     public static void main(String[] args) {
-        TicketPaymentGUI frame = new TicketPaymentGUI("jwmclean2002@gmail.com");
+        TicketPaymentGUI frame = new TicketPaymentGUI("nametimeman@gmail.com");
         frame.setTitle("Payment");
         frame.setVisible(true);
         frame.setBounds(10,10, 400,250);
