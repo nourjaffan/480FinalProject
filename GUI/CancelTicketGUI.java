@@ -58,11 +58,19 @@ public class CancelTicketGUI extends JFrame implements ActionListener {
         if(ticketNumField.getText().isEmpty() || emailField.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Please enter all info");
         }else{
-            SuccessfulCancel success = new SuccessfulCancel();
-            success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            success.setBounds(10,10, 400,400);
-            success.setVisible(true);
-            acc.cancelTheTicket(Integer.parseInt(ticketNumField.getText()), emailField.getText());
+            try{
+                acc.cancelTheTicket(Integer.parseInt(ticketNumField.getText()), emailField.getText());
+                SuccessfulCancel success = new SuccessfulCancel();
+                success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                success.setBounds(10,10, 400,400);
+                success.setVisible(true);
+                
+                dispose();
+            }catch(Exception k){
+                JOptionPane.showMessageDialog(null, "This ticket cannot be canceled anymore since it has passed 72hrs");
+            }
+            
+            
         }
         // TODO Auto-generated method stub
         
