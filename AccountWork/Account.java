@@ -8,9 +8,7 @@ public class Account
 {
     private boolean registered = false;
     private String email;
-    private String password;
 
-    //static AccessDatabase access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
     private DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
     
     
@@ -18,7 +16,6 @@ public class Account
                          String billingName, String billingAddress)
     {
         this.email = email;
-        this.password = password;
       access.addNewUser(name, address, cardNumber, billingName, billingAddress, email, password, phoneNumber);
       this.registered = true;
       //pay 20 dollar fee
