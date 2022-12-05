@@ -1,6 +1,10 @@
 package GUI;
 
 import javax.swing.*;
+
+import Payment.PaymentAnnual;
+import Payment.PaymentImplement;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -10,7 +14,11 @@ public class SuccessfulSignup extends JFrame implements ActionListener{
     private JLabel usernameLabel;
     
     public SuccessfulSignup() {
-        usernameLabel = new JLabel("You have been registered and are paying $20 annually");
+        PaymentImplement payment = new PaymentImplement() {};
+        payment.setPaymentStrategy(new PaymentAnnual());
+        int paymentVal = payment.performPayment();
+
+        usernameLabel = new JLabel("You have been registered and are paying $" + paymentVal + " annually");
         usernameLabel.setBounds(20,50,400,30);
         Button = new JButton("continue");
         Button.addActionListener(this);
