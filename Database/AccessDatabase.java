@@ -9,45 +9,7 @@ public class AccessDatabase {
 
     private Connection dbConnect;
     private ResultSet results;
-/*
-    private int totalFoodItems;
 
-    public int getTotalFoodItems(){
-        try {
-            Statement myStmt = dbConnect.createStatement();
-            ResultSet results = myStmt.executeQuery("SELECT * FROM " + "available_food");
-            while(results.next()){
-                if(results.isLast()){
-                    this.totalFoodItems = results.getInt("ItemID");
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        return this.totalFoodItems;
-    }
-
-    public String getSpecificFood(int itemID){
-        StringBuffer full = new StringBuffer();
-        try {
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "available_food");
-            while(results.next()){
-                if(results.getInt("ItemID") == itemID){
-                    full.append(results.getString("Name") + "/" + results.getString("GrainContent") + "/"
-                            + results.getString("FVContent") + "/" + results.getString("ProContent") + "/"
-                            + results.getString("Other") + "/" + results.getString("Calories"));
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-
-        return full.toString();
-    }
-    */
     public boolean getSpecificUser(String email, String password){
         boolean isRegistered = false;
         try {
@@ -205,7 +167,8 @@ public class AccessDatabase {
 
                         boolean registered = false;
                         full.append(results.getDouble("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
-                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/" + results.getString("Email") + "/");
+                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/" + results.getString("Email") + "/"
+                        + results.getInt("UniqueTicket") + "/" + results.getString("ShowTime") + "/");
                         
                         ResultSet checkRegistered = myStmt.executeQuery("SELECT * FROM " + "account");
                         while(checkRegistered.next()){
@@ -401,16 +364,17 @@ public class AccessDatabase {
         return available;
     }
     
-    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
+    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year, int boolVal){
         try{
-            String query = "UPDATE Seat SET Vacant = 0 WHERE Title=? AND SeatNumber=? AND ShowTime=? AND Day=? AND Month=? AND Year=?";
+            String query = "UPDATE Seat SET Vacant = ? WHERE Title=? AND SeatNumber=? AND ShowTime=? AND Day=? AND Month=? AND Year=?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
-            myStmt.setString(1,title);
-            myStmt.setString(2, String.valueOf(seatNumber));
-            myStmt.setString(3,showTime);
-            myStmt.setString(4, String.valueOf(day));
-            myStmt.setString(5, String.valueOf(month));
-            myStmt.setString(6, String.valueOf(year));
+            myStmt.setString(1, String.valueOf(boolVal));
+            myStmt.setString(2,title);
+            myStmt.setString(3, String.valueOf(seatNumber));
+            myStmt.setString(4,showTime);
+            myStmt.setString(5, String.valueOf(day));
+            myStmt.setString(6, String.valueOf(month));
+            myStmt.setString(7, String.valueOf(year));
             myStmt.executeUpdate();
             myStmt.close();
         }catch(SQLException e){
@@ -418,21 +382,6 @@ public class AccessDatabase {
         }
     }
     
-    /* 
-    public void deleteAvailableFood(String id){
-        try {
-            String query = "DELETE FROM available_food WHERE ItemID = ?";
-            PreparedStatement myStmt = dbConnect.prepareStatement(query);
-
-            myStmt.setString(1,id);
-            myStmt.executeUpdate();
-            myStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-    */
     public void dbConnectClose(){
         try {
             dbConnect.close();
@@ -476,50 +425,6 @@ public class AccessDatabase {
         return this.PASSWORD;
     }
 
-/*
-    public String selectAllAvailableFood(){
-
-        StringBuffer full = new StringBuffer();
-        try {
-
-            Statement myStmt = dbConnect.createStatement();
-            ResultSet results = myStmt.executeQuery("SELECT * FROM " + "available_food");
-
-            while(results.next()){
-
-                full.append(results.getString("ItemID") + ", "  + results.getString("Name"));
-                full.append("\n");
-            }
-            full.deleteCharAt(full.length() - 1);
-            myStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return full.toString();
-    }
-    public String selectAllDailyClientNeeds(){
-
-        StringBuffer full = new StringBuffer();
-        try {
-
-            Statement myStmt = dbConnect.createStatement();
-            ResultSet results = myStmt.executeQuery("SELECT * FROM " + "daily_client_needs");
-
-            while(results.next()){
-
-                full.append(results.getString("ClientID") + ", "  + results.getString("Client"));
-                full.append("\n");
-            }
-            full.deleteCharAt(full.length() - 1);
-            myStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return full.toString();
-    }
-*/
     public void close() {
 
         try {
