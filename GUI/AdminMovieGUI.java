@@ -1,4 +1,9 @@
+package GUI;
+
 import javax.swing.*;
+
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -21,7 +26,7 @@ public class AdminMovieGUI extends JFrame implements ActionListener {
     private JTextField movieYearField;
 
     private JButton confirmButton;
-
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     private Container container;
     
     public AdminMovieGUI() {
@@ -87,6 +92,9 @@ public class AdminMovieGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        database.addNewMovie(movieTitleField.getText(), movieGenreField.getText(), movieLengthField.getText(), movieReleaseTimeField.getText(),
+                            Integer.parseInt(movieDayField.getText()), Integer.parseInt(movieMonthField.getText()), Integer.parseInt(movieYearField.getText()));
+        JOptionPane.showMessageDialog(null, "The movie has been added to the database");
         // TODO Auto-generated method stub
         
     }
