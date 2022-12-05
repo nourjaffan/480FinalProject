@@ -92,6 +92,7 @@ public class SeatingGUI extends JFrame implements ActionListener {
                     frame.setResizable(false);
                     dispose();
                 }else{
+                    
                     RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime, day, month, year);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
