@@ -48,7 +48,7 @@ public class Account
         LocalDate time = java.time.LocalDate.now();
         Float cost = (float) 0;
         String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
-
+        System.out.println(tmp[0]);
         LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
