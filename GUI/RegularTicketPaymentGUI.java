@@ -6,7 +6,6 @@ import java.awt.event.*;
 
 import SendEmails.SendEmail;
 import Database.DatabaseSingleton;
-import Payment.PaymentAnnual;
 import Payment.PaymentImplement;
 import Payment.PaymentTicket;
 
@@ -106,7 +105,7 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
         int cost = pay.performPayment();
         access.setSpecificSeat(movie, seat, showtime, day, month, year, 0);
         
-        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat
+        new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat
                                         + "\n" + "Your unique ticket number is " + tickNum);
         JOptionPane.showMessageDialog(null, "The order has been completed and the ticket has been sent to your email");
         dispose();
