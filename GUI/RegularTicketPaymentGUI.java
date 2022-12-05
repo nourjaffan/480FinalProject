@@ -6,6 +6,8 @@ import java.awt.event.*;
 
 import SendEmails.SendEmail;
 import Database.DatabaseSingleton;
+import Payment.PaymentAnnual;
+import Payment.PaymentImplement;
 
 public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     
@@ -98,7 +100,10 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText(), 1);
-        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $15 \n\n please enjoy "+ this.movie +" at "+this.showtime +" in seat number " + this.seat);
+        PaymentImplement pay = new PaymentImplement(){};
+        pay.setPaymentStrategy(new PaymentAnnual());
+        int cost = pay.performPayment();
+        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + "day of the month in seat " + this.seat);
         dispose();
         
     }
