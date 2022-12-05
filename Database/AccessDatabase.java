@@ -1,7 +1,9 @@
 package Database;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Vector;  
+import java.util.Vector;
+
+import com.mysql.cj.protocol.Resultset;  
 public class AccessDatabase {
     public final String DBURL;
     public final String USERNAME;
@@ -138,19 +140,32 @@ public class AccessDatabase {
         }
         return full.toString();
     }
-    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email, int unique ){
-        
+    public int addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email){
+        int lastIDVal = 0;
         try {
             
-            Statement myStmt = dbConnect.createStatement();
-            
-            String tmp = String.format("INSERT INTO ticket " + "VALUES (%d, '%s', '%s', %f, %d, %d, %d, '%s', %d)", 
-                seatNum, showTime, title, cost, day, month, year, email, unique);
-            myStmt.executeUpdate(tmp);
-            myStmt.close();
+
+            String query = "INSERT INTO ticket VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL)";
+            PreparedStatement myStmts = dbConnect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            myStmts.setInt(1,seatNum);
+            myStmts.setString(2, showTime);
+            myStmts.setString(3, title);
+            myStmts.setDouble(4, cost);
+            myStmts.setInt(5,day);
+            myStmts.setInt(6,month);
+            myStmts.setInt(7, year);
+            myStmts.setString(8,email);
+            myStmts.executeUpdate();
+
+            PreparedStatement ps =  dbConnect.prepareStatement("SELECT last_insert_id() FROM ticket");
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            lastIDVal = Integer.valueOf(rs.getString(1));
+            myStmts.close();
         }catch(SQLException e){
 
         }
+        return lastIDVal;
         
     }
 
