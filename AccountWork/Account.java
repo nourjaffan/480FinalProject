@@ -3,6 +3,7 @@ package AccountWork;
 import java.time.LocalDate;  
 import java.util.*;
 import Database.DatabaseSingleton;
+import SendEmails.SendEmail;
 public class Account
 {
     private boolean registered = false;
@@ -41,14 +42,13 @@ public class Account
         
     }
 
-    public void cancelTheTicket(int uniqueTicket, String email){
+    public void cancelTheTicket(int uniqueTicket, String email) throws Exception{
         if(access.getSpecificTicket(uniqueTicket, email) == null){  //If there is no ticket found in database return nothing there
             return;
         }
         LocalDate time = java.time.LocalDate.now();
         Float cost = (float) 0;
         String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
-        System.out.println(tmp[0]);
         LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
@@ -59,7 +59,7 @@ public class Account
             access.removeSpecificTicket(Integer.toString(uniqueTicket));    
             
         }else{
-            return;
+            throw new Exception();
         }
         if(tmp[7].equals("False")){
             //Guest user
@@ -71,9 +71,12 @@ public class Account
             refundAmount = cost;
         }
         //Send email with coupon with refundAmount and the date it expires
-
+        
+        int yearPlusOne = time.getYear() + 1;
+        new SendEmail(tmp[6], "Refund credit", "The credit that has been refunded is: " + refundAmount + ". It will expire on " + yearPlusOne 
+        + "/" + time.getMonthValue() + "/" + time.getDayOfMonth());
+        access.removeSpecificTicket(String.valueOf(uniqueTicket));
     }
-
     public Vector<String> displayMovieNews(){
         if(this.registered == true){
             return access.getAllNews();
@@ -96,3 +99,4 @@ public class Account
         return this.registered;
     }
 }
+
