@@ -64,7 +64,7 @@ public class TicketPaymentGUI extends JFrame implements ActionListener {
         pay.setPaymentStrategy(new PaymentTicket());
         int cost = pay.performPayment();
         
-        access.setSpecificSeat(movie, seat, showtime, day, month, year);
+        access.setSpecificSeat(movie, seat, showtime, day, month, year, 0);
         SendEmail reciept = new SendEmail(this.acc.getEmail(), "Ticket Reciept", "Ticket cost = $"+ cost +" \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat 
                                             + "\n" + "Your unique ticket number is " + tickNum);
         dispose();
