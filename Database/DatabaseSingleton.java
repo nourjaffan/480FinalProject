@@ -61,10 +61,11 @@ public class DatabaseSingleton {
         return tmp;
     }
 //  All ticket methods
-    public void addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email, int unique){
+    public int addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email){
         access.initializeConnection();
-        access.addNewTicket(seatNum, showTime, title, cost, day, month, year, email, unique);
+        int lastVal = access.addNewTicket(seatNum, showTime, title, cost, day, month, year, email);
         access.dbConnectClose();
+        return lastVal;
     }
     public String getSpecificTicket(int unique, String email){
         access.initializeConnection();
