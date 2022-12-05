@@ -7,6 +7,7 @@ import Database.DatabaseSingleton;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.util.Vector;
 
 public class GUIAccount extends JFrame implements ActionListener{
@@ -100,10 +101,21 @@ public class GUIAccount extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         //if movie exists in database:
         if(database.getSpecificMovie(searchField.getText())){
-            SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc);
+            LocalDate today = LocalDate.now();
+            String[] tmp = database.getSpecificStringMovie(searchField.getText()).split("/");
+            LocalDate theRelease = LocalDate.of(Integer.parseInt(tmp[6]), Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]));
+            boolean released;
+            if( theRelease.getDayOfYear() - today.getDayOfYear() <= 3){
+                released = true;
+            }else{
+                released = false;
+            }
+            SelectShowtimeGUI showtimeGUI = new SelectShowtimeGUI(searchField.getText(), acc, released);
             showtimeGUI.setBounds(10, 10, 400, 400);
             showtimeGUI.setVisible(true);
             dispose();
+            
+            
         }else{
             failSearch.setText("No movie was found");
             
