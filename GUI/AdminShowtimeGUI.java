@@ -1,4 +1,9 @@
+package GUI;
+
 import javax.swing.*;
+
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -19,7 +24,7 @@ public class AdminShowtimeGUI extends JFrame implements ActionListener {
 
     private JButton confirmButton;
     private Container container;
-
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     public AdminShowtimeGUI() {
         showtimeLabel = new JLabel("Add Showtime");
         titleLabel = new JLabel("Title");
@@ -69,6 +74,9 @@ public class AdminShowtimeGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        database.addNewShowTime(titleField.getText(), timeField.getText(), Integer.parseInt(dayField.getText()),
+                                Integer.parseInt(monthField.getText()), Integer.parseInt(yearField.getText()), 40);
+        JOptionPane.showMessageDialog(null, "The new showtime has been added");
         // TODO Auto-generated method stub
         
     }
