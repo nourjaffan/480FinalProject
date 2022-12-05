@@ -1,3 +1,5 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -32,6 +34,8 @@ public class AdminGUI extends JFrame implements ActionListener {
         container.add(movieButton);
         container.add(newsButton);
         container.add(showtimeButton);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 
@@ -42,7 +46,7 @@ public class AdminGUI extends JFrame implements ActionListener {
             frame.setTitle("Add Movie");
             frame.setVisible(true);
             frame.setBounds(10,10, 400,520);
-            frame.setDefaultCloseOperation(ABORT);
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             frame.setResizable(false);
         }
 
@@ -51,7 +55,7 @@ public class AdminGUI extends JFrame implements ActionListener {
             frame.setTitle("Add News");
             frame.setVisible(true);
             frame.setBounds(10,10, 400,400);
-            frame.setDefaultCloseOperation(ABORT);
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             frame.setResizable(false);
         }
 
@@ -60,7 +64,7 @@ public class AdminGUI extends JFrame implements ActionListener {
             frame.setTitle("Add Showtime");
             frame.setVisible(true);
             frame.setBounds(10,10, 400,420);
-            frame.setDefaultCloseOperation(ABORT);
+            frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             frame.setResizable(false);
         }
     }
