@@ -8,6 +8,7 @@ import SendEmails.SendEmail;
 import Database.DatabaseSingleton;
 import Payment.PaymentAnnual;
 import Payment.PaymentImplement;
+import Payment.PaymentTicket;
 
 public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     
@@ -37,7 +38,7 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     private String showtime;
     private int seat;
 
-    public RegularTicketPaymentGUI(int seatNum, String showTime, String title, int day, int month , int year) {
+    public RegularTicketPaymentGUI(int seatNum, String title, String showTime, int day, int month , int year) {
         this.movie = title;
         this.showtime = showTime;
         this.seat = seatNum;
@@ -99,11 +100,15 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText(), 1);
+        int tickNum = 1;
+        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText(), tickNum);
         PaymentImplement pay = new PaymentImplement(){};
-        pay.setPaymentStrategy(new PaymentAnnual());
+        pay.setPaymentStrategy(new PaymentTicket());
         int cost = pay.performPayment();
-        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + "day of the month in seat " + this.seat);
+        access.setSpecificSeat(movie, seat, showtime, day, month, year);
+        
+        SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat
+                                        + "\n" + "Your unique ticket number is " + tickNum);
         dispose();
         
     }
