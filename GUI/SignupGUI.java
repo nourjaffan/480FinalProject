@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 
+import AccountWork.Account;
 import Database.DatabaseSingleton;
 
 import java.awt.*;
@@ -83,7 +84,7 @@ public class SignupGUI extends JFrame implements ActionListener {
         billingNumberField.setBounds(150,460,150,30);
 
         signupButton.setBounds(125,530,150,50);
-
+        emailUsedLabel.setBounds(125,490,150,30);
         //add to container
         container = getContentPane();
         container.setLayout(null);
@@ -106,7 +107,7 @@ public class SignupGUI extends JFrame implements ActionListener {
         container.add(billingNumberLabel);
         container.add(billingNumberField);
         container.add(signupButton);
-        
+        container.add(emailUsedLabel);
         emailUsedLabel.setForeground(Color.red);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -127,7 +128,6 @@ public class SignupGUI extends JFrame implements ActionListener {
                     success.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     success.setBounds(10,10, 400,400);
                     success.setVisible(true);
-                    success.setResizable(false);
                     dispose();
                 }else{
                     
