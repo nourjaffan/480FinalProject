@@ -3,7 +3,7 @@ package GUI;
 import javax.swing.*;
 
 import AccountWork.Account;
-import Database.DatabaseSingleton;
+
 
 
 import java.awt.*;
@@ -20,7 +20,6 @@ public class CancelTicketGUI extends JFrame implements ActionListener {
     private Container container;
 
     private Account acc;
-    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     public CancelTicketGUI(Account acc) {
         cancelLabel = new JLabel("Cancel Ticket");
         ticketNumLabel = new JLabel("Enter Ticket Number");
