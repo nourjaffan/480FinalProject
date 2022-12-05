@@ -1,454 +1,129 @@
 package Database;
-import java.sql.*;
-import java.time.LocalDate;
 import java.util.Vector;
 
-import com.mysql.cj.protocol.Resultset;  
-public class AccessDatabase {
-    public final String DBURL;
-    public final String USERNAME;
-    public final String PASSWORD;
+public class DatabaseSingleton {
+    private static DatabaseSingleton onlyInstance;
+    private AccessDatabase access;
+    private DatabaseSingleton(){
+        access = new AccessDatabase("jdbc:mysql://localhost:3306/db", "test", "password");
+    }
 
-    private Connection dbConnect;
-    private ResultSet results;
-
-    public boolean getSpecificUser(String email, String password){
-        boolean isRegistered = false;
-        try {
-
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "account");
-            while(results.next()){
-                if(results.getString("Email").equals(email) && results.getString("Password").equals(password)){
-                    isRegistered = true;
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
+    public static DatabaseSingleton getOnlyInstance(){
+        if(onlyInstance == null){
+            onlyInstance = new DatabaseSingleton();
         }
-        return isRegistered;
+        return onlyInstance;
+    }
+
+    public static void setOnlyInstance(DatabaseSingleton onlyInstace){
+        DatabaseSingleton.onlyInstance = onlyInstace;
+    }
+//  All user methods
+    public boolean getSpecificUser(String email, String password){
+        access.initializeConnection();
+        boolean tmp = access.getSpecificUser(email, password);
+        access.dbConnectClose();
+        return tmp;
     }
     public boolean getSpecificUser(String email){
-        boolean isRegistered = false;
-        try {
-
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "account");
-            while(results.next()){
-                if(results.getString("Email").equals(email)){
-                    isRegistered = true;
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        return isRegistered;
+        access.initializeConnection();
+        boolean tmp = access.getSpecificUser(email);
+        access.dbConnectClose();
+        return tmp;
     }
     public String getSpecificUserString(String email){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "account");
-            
-            while(results.next()){
-                
-                if(results.getString("email").equals(email)){
-
-                        full.append(results.getString("Name") + "/" + results.getString("Email") + "/" + results.getString("Password"));
-
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
-
-        }
-        return full.toString();
+        access.initializeConnection();
+        String tmp = access.getSpecificUserString(email);
+        access.dbConnectClose();
+        return tmp;
     }
     public void addNewUser(String name, String address, String cardInfo, String billingName, String billingAddress, String email, String password, String phoneNumber){
-        
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            String tmp = String.format("INSERT INTO account " + "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-                name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber);
-                
-            myStmt.executeUpdate(tmp);
-            
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        
+        access.initializeConnection();
+        access.addNewUser(name, address, cardInfo, billingName, billingAddress, email, password, phoneNumber);
+        access.dbConnectClose();
     }
-
+//  All movie methods
     public void addNewMovie(String title, String genre, String length, String releaseTime, int day, int month, int year){
-        
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            
-            String tmp = String.format("INSERT INTO movie " + "VALUES ('%s', '%s', '%s', '%s', %d, %d, %d)", 
-                title, genre, length, releaseTime, day, month, year);
-                
-            myStmt.executeUpdate(tmp);
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        
+        access.initializeConnection();
+        access.addNewMovie(title, genre, length, releaseTime, day, month, year);
+        access.dbConnectClose();
     }
     public boolean getSpecificMovie(String movieName){
-        boolean isThere = false;
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "movie");
-            
-            while(results.next()){
-                if(results.getString("Title").equals(movieName)){
-                    
-                    isThere = true;
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        return isThere;
+        access.initializeConnection();
+        boolean specificMovie = access.getSpecificMovie(movieName);
+        access.dbConnectClose();
+        return specificMovie;
     }
     public String getSpecificStringMovie(String movieName){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "movie");
-            
-            while(results.next()){
-                if(results.getString("Title").equals(movieName)){
-                    
-                    full.append(results.getString("Title") + "/" + results.getString("Genre") + "/" + results.getString("Length") + "/" +
-                    results.getString("ReleaseTime") + "/" + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year"));
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        return full.toString();
+        access.initializeConnection();
+        String tmp = access.getSpecificStringMovie(movieName);
+        access.dbConnectClose();
+        return tmp;
     }
+//  All ticket methods
     public int addNewTicket(int seatNum, String showTime, String title, double cost, int day, int month, int year, String email){
-        int lastIDVal = 0;
-        try {
-            
-
-            String query = "INSERT INTO ticket VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL)";
-            PreparedStatement myStmts = dbConnect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            myStmts.setInt(1,seatNum);
-            myStmts.setString(2, showTime);
-            myStmts.setString(3, title);
-            myStmts.setDouble(4, cost);
-            myStmts.setInt(5,day);
-            myStmts.setInt(6,month);
-            myStmts.setInt(7, year);
-            myStmts.setString(8,email);
-            myStmts.executeUpdate();
-
-            PreparedStatement ps =  dbConnect.prepareStatement("SELECT last_insert_id() FROM ticket");
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            lastIDVal = Integer.valueOf(rs.getString(1));
-            myStmts.close();
-        }catch(SQLException e){
-
-        }
-        return lastIDVal;
-        
+        access.initializeConnection();
+        int lastVal = access.addNewTicket(seatNum, showTime, title, cost, day, month, year, email);
+        access.dbConnectClose();
+        return lastVal;
     }
-
     public String getSpecificTicket(int unique, String email){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "ticket");
-            
-            while(results.next()){
-                
-                if(results.getInt("UniqueTicket") == unique && results.getString("Email").equals(email)){
-
-                        boolean registered = false;
-                        full.append(results.getDouble("Cost")+ "/" + results.getInt("SeatNumber") + "/" + results.getString("Title") + "/" 
-                        + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year") + "/" + results.getString("Email") + "/"
-                        + results.getInt("UniqueTicket") + "/" + results.getString("ShowTime") + "/");
-                        
-                        ResultSet checkRegistered = myStmt.executeQuery("SELECT * FROM " + "account");
-                        while(checkRegistered.next()){
-                            
-                            if(checkRegistered.getString("Email").equals(email)){
-                                registered = true;
-                                break;
-                            }
-                        }
-                        
-                        checkRegistered.close();
-                        full.append(registered);
-
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
-
-        }
-        return full.toString();
+        access.initializeConnection();
+        String specificTicket = access.getSpecificTicket(unique, email);
+        access.dbConnectClose();
+        return specificTicket;
     }
-
     public void removeSpecificTicket(String unique){
-        try {
-            String query = "DELETE FROM ticket WHERE UniqueTicket = ?";
-            PreparedStatement myStmt = dbConnect.prepareStatement(query);
-
-            myStmt.setString(1,unique);
-            myStmt.executeUpdate();
-            myStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        access.initializeConnection();
+        access.removeSpecificTicket(unique);
+        access.dbConnectClose();
     }
-
+//  All showtime methods
     public void addNewShowTime(String title, String showTime, int day, int month, int year, int amountOfSeats){
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            
-            String tmp = String.format("INSERT INTO showtimes " + "VALUES ('%s', '%s', %d, %d, %d)", 
-                title, showTime, day, month, year);
-            for(int i = 1; i <= amountOfSeats; i++){
-                addSeats(title, i, showTime, day, month, year);
-            }
-            myStmt.executeUpdate(tmp);
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
+        access.initializeConnection();
+        access.addNewShowTime(title, showTime, day, month, year, amountOfSeats);
+        access.dbConnectClose();
     }
-
     public String getSpecificShowTime(String title, String showTime, int day, int month, int year){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
-            
-            while(results.next()){
-                
-                if(results.getString("Title").equals(title) && results.getString("ShowTime").equals(showTime) &&
-                    results.getInt("Day") == day && results.getInt("Month") == month && results.getInt("Year") == year){
-                    full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
-                    + "/" + results.getString("ShowTime") + "/" + results.getString("Title"));
-                    
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
-
-        }
-        return full.toString();
+        access.initializeConnection();
+        String specificShowTime = access.getSpecificShowTime(title, showTime, day, month, year);
+        access.dbConnectClose();
+        return specificShowTime;
     }
     public String getAllShowTimes(String title){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "showtimes");
-            
-            while(results.next()){
-                
-                if(results.getString("Title").equals(title)){
-                    full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
-                    + "/" + results.getString("ShowTime") + "/" + results.getString("Title") + "\n");
-                    
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
-
-        }
-        
-        return full.toString().strip();
+        access.initializeConnection();
+        String allShowTime = access.getAllShowTimes(title);
+        access.dbConnectClose();
+        return allShowTime;
     }
-
+//  All news methods
     public void addNewNews(String news, int day, int month, int year){
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            
-            String tmp = String.format("INSERT INTO news " + "VALUES ('%s', %d, %d, %d)", 
-                news, day, month, year);
-            myStmt.executeUpdate(tmp);
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
+        access.initializeConnection();
+        access.addNewNews(news, day, month, year);
+        access.dbConnectClose();
     }
-
     public Vector<String> getAllNews(){
-        Vector<String> full = new Vector<String>();
-        LocalDate theDate = java.time.LocalDate.now();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "news");
-            
-            while(results.next()){
-                LocalDate tmpDate = LocalDate.of(results.getInt("Year"), results.getInt("Month"), results.getInt("Day"));
-                if(tmpDate.isAfter(theDate)){
-                    
-                    full.add(results.getString("Title") + "/" + tmpDate.toString());
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
- 
-        }
-        
-        return full;
+        access.initializeConnection();
+        Vector<String> allNews = access.getAllNews();
+        access.dbConnectClose();
+        return allNews;
     }
-
     public String getSpecificNews(String title){
-        StringBuffer full = new StringBuffer();
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "news");
-            
-            while(results.next()){
-                if(results.getString("Title").equals(title)){
-                    
-                    full.append(results.getString("News") + "/" + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year"));
-                }
-            }
-            myStmt.close();
-            
-        }catch(SQLException e){
- 
-        }
-        
-        return full.toString();
+        access.initializeConnection();
+        String tmp = access.getSpecificNews(title);
+        access.dbConnectClose();
+        return tmp;
     }
-
-    public void addSeats(String title, int seatNumber, String showTime, int day, int month, int year){
-        try{
-            Statement myStmt = dbConnect.createStatement();
-                
-            String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 1, %d, '%s', %d, %d, %d)", 
-                title, seatNumber, showTime, day, month, year);
-            myStmt.executeUpdate(tmp);
-            myStmt.close();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
+//  All seat methods
     public boolean getSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
-        boolean available = true;
-        try {
-            
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM " + "seat");
-            
-            while(results.next()){
-                if(results.getString("Title").equals(title) && results.getInt("SeatNumber") == seatNumber 
-                && results.getString("ShowTime").equals(showTime) && results.getInt("Day") == day && results.getInt("Month") == month
-                && results.getInt("Year") == year){
-                    
-                    available = results.getBoolean("Vacant");
-                }
-            }
-            myStmt.close();
-        }catch(SQLException e){
-
-        }
-        
+        access.initializeConnection();
+        boolean available = access.getSpecificSeat(title, seatNumber, showTime, day, month, year);
+        access.dbConnectClose();
         return available;
     }
-    
     public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year, int boolVal){
-        try{
-            String query = "UPDATE Seat SET Vacant = ? WHERE Title=? AND SeatNumber=? AND ShowTime=? AND Day=? AND Month=? AND Year=?";
-            PreparedStatement myStmt = dbConnect.prepareStatement(query);
-            myStmt.setString(1, String.valueOf(boolVal));
-            myStmt.setString(2,title);
-            myStmt.setString(3, String.valueOf(seatNumber));
-            myStmt.setString(4,showTime);
-            myStmt.setString(5, String.valueOf(day));
-            myStmt.setString(6, String.valueOf(month));
-            myStmt.setString(7, String.valueOf(year));
-            myStmt.executeUpdate();
-            myStmt.close();
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-    
-    public void dbConnectClose(){
-        try {
-            dbConnect.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public AccessDatabase(String url, String user, String pw){
-
-        // Database URL
-        this.DBURL = url;
-
-        //  Database credentials
-        this.USERNAME = user;
-        this.PASSWORD = pw;
-    }
-
-
-    //Must create a connection to the database, no arguments, no return value
-    public void initializeConnection(){
-        try {
-            dbConnect = DriverManager.getConnection(this.DBURL, this.USERNAME, this.PASSWORD);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    String getDburl(){
-        return this.DBURL;
-    }
-
-    String getUsername(){
-        return this.USERNAME;
-    }
-
-    String getPassword(){
-        return this.PASSWORD;
-    }
-
-    public void close() {
-
-        try {
-            results.close();
-            dbConnect.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
+        access.initializeConnection();
+        access.setSpecificSeat(title, seatNumber, showTime, day, month, year, boolVal);
+        access.dbConnectClose();
     }
 }
