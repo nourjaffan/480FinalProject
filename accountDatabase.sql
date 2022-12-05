@@ -48,3 +48,5 @@ CREATE TABLE news
     Year          int,
     PRIMARY KEY(Title)
     );  
+
+INSERT INTO account VALUES ('admin', 'add', 'none', 'none', 'none', 'admin', 'pass', 'none')
