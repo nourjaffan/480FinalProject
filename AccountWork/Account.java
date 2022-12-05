@@ -41,14 +41,6 @@ public class Account
         
     }
 
-    public void addTicket(Ticket ticket){
-        access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
-                            email, ticket.getUniqueTicket());
-    }
-    public void addTicket(Ticket ticket, String guestEmail){
-        access.addNewTicket(ticket.getSeatNum(), ticket.getShowTime(), ticket.getTitle(), ticket.getCost(), ticket.getDay(), ticket.getMonth(), ticket.getYear(),
-                            guestEmail, ticket.getUniqueTicket());
-    }
     public void cancelTheTicket(int uniqueTicket, String email){
         if(access.getSpecificTicket(uniqueTicket, email) == null){  //If there is no ticket found in database return nothing there
             return;
@@ -56,7 +48,7 @@ public class Account
         LocalDate time = java.time.LocalDate.now();
         Float cost = (float) 0;
         String[] tmp = access.getSpecificTicket(uniqueTicket, email).split("/");
-        System.out.println(tmp[0]);
+
         LocalDate ticket = LocalDate.of(Integer.parseInt(tmp[5]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[3]));
         String compare = time.until(ticket).toString();
         Integer date = Integer.parseInt(compare.substring(1, compare.length()-1));
