@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import SendEmails.SendEmail;
+import Database.DatabaseSingleton;
 
 public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     
@@ -24,14 +25,23 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
     private JButton confirmButton;
     private Container container;
 
+    private int day;
+    private int month;
+    private int year;
+
+    private static DatabaseSingleton access = DatabaseSingleton.getOnlyInstance();
+
     private String movie;;
     private String showtime;
     private int seat;
 
-    public RegularTicketPaymentGUI(int seatNum, String showTime, String title) {
+    public RegularTicketPaymentGUI(int seatNum, String showTime, String title, int day, int month , int year) {
         this.movie = title;
         this.showtime = showTime;
         this.seat = seatNum;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         titleLabel = new JLabel("Confirm Ticket Purchase");
         info = new JLabel("watching "+ title + " in seat number " + seatNum + " at " + showtime);
         emailLabel = new JLabel("Email");
@@ -87,6 +97,7 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText(), 1);
         SendEmail reciept = new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $15 \n\n please enjoy "+ this.movie +" at "+this.showtime +" in seat number " + this.seat);
         dispose();
         
