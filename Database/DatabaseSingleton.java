@@ -120,9 +120,9 @@ public class DatabaseSingleton {
         access.dbConnectClose();
         return available;
     }
-    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year){
+    public void setSpecificSeat(String title, int seatNumber, String showTime, int day, int month, int year, int boolVal){
         access.initializeConnection();
-        access.setSpecificSeat(title, seatNumber, showTime, day, month, year);
+        access.setSpecificSeat(title, seatNumber, showTime, day, month, year, boolVal);
         access.dbConnectClose();
     }
 }
