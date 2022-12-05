@@ -32,7 +32,8 @@ public class GUIAccount extends JFrame implements ActionListener{
         boolean checkIfNews = false;
         Vector<String> newsList = database.getAllNews();
         for(String news : newsList){
-            JLabel announceTmp = new JLabel(news);
+            String[] tmp = news.split("/");
+            JLabel announceTmp = new JLabel(tmp[0] + " releases on " + tmp[1]);
             announcementLabel.add(announceTmp);
             checkIfNews = true;
             
