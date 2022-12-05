@@ -20,15 +20,13 @@ public class SeatingGUI extends JFrame implements ActionListener {
     private String title;
     private String showTime;
     private Account acc;
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
+
     private int day;
     private int month;
     private int year;
-    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
 
     public SeatingGUI(String title, String showTime, Account acc, int day, int month, int year) {
-        this.day = day;
-        this.month = month;
-        this.year = year;
         titleLabel = new JLabel("Select Seat");
         titleLabel.setBounds(0,10,650,30);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -74,7 +72,10 @@ public class SeatingGUI extends JFrame implements ActionListener {
         this.acc = acc;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
+        this.day = day;
+        this.month = month;
+        this.year = year;
     }
 
     @Override
@@ -84,14 +85,14 @@ public class SeatingGUI extends JFrame implements ActionListener {
                 //do nothing
             } else {    //NEED CHECK FOR REGISTERED USER AND WHETHER SELECTED SEAT IS AVAILABLE
                 if(acc.getReg()){
-                    TicketPaymentGUI frame = new TicketPaymentGUI(acc, selected, title, showTime, this.day, this.month, this.year);
+                    TicketPaymentGUI frame = new TicketPaymentGUI(acc, selected, title, showTime, day, month, year);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
                     frame.setResizable(false);
                     dispose();
                 }else{
-                    RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime, this.day, this.month, this.year);
+                    RegularTicketPaymentGUI frame = new RegularTicketPaymentGUI(selected, title, showTime, day, month, year);
                     frame.setTitle("Payment");
                     frame.setVisible(true);
                     frame.setBounds(10,10, 400,500);
