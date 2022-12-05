@@ -52,6 +52,7 @@ public class LoginGUI extends JFrame implements ActionListener {
         container.add(cancelButton);
 
         acc = new Account();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override
