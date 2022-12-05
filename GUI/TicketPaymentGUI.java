@@ -58,15 +58,14 @@ public class TicketPaymentGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int tickNum = 1;
-        access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.acc.getEmail(), tickNum);
+        int tickNum = access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.acc.getEmail());
         PaymentImplement pay = new PaymentImplement(){};
         pay.setPaymentStrategy(new PaymentTicket());
         int cost = pay.performPayment();
-        
         access.setSpecificSeat(movie, seat, showtime, day, month, year, 0);
         SendEmail reciept = new SendEmail(this.acc.getEmail(), "Ticket Reciept", "Ticket cost = $"+ cost +" \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat 
                                             + "\n" + "Your unique ticket number is " + tickNum);
+        JOptionPane.showMessageDialog(null, "The order has been completed and the ticket has been sent to your email");
         dispose();
     }
  /*
