@@ -2,7 +2,6 @@ package GUI;
 
 import javax.swing.*;
 
-import AccountWork.Account;
 import Database.DatabaseSingleton;
 
 import java.awt.*;
