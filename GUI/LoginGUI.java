@@ -68,11 +68,19 @@ public class LoginGUI extends JFrame implements ActionListener {
             }
             
             if(loginCheck) {
-                GUIAccount GUIAccount = new GUIAccount(acc);
-                GUIAccount.setBounds(10,10, 400,400);
-                GUIAccount.setVisible(true);
-                GUIAccount.setResizable(false);
-                dispose();
+                if(username.equals("admin") && password.equals("pass")){
+                    AdminGUI GUIAdmin = new AdminGUI();
+                    GUIAdmin.setBounds(10,10, 400,400);
+                    GUIAdmin.setVisible(true);
+                    GUIAdmin.setResizable(false);
+                    dispose();
+                }else{
+                    GUIAccount GUIAccount = new GUIAccount(acc);
+                    GUIAccount.setBounds(10,10, 400,400);
+                    GUIAccount.setVisible(true);
+                    GUIAccount.setResizable(false);
+                    dispose();
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid login");
             }
