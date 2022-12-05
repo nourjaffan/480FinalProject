@@ -1,4 +1,9 @@
+package GUI;
+
 import javax.swing.*;
+
+import Database.DatabaseSingleton;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,7 +21,7 @@ public class AdminNewsGUI extends JFrame implements ActionListener {
 
     private JButton confirmButton;
     private Container container;
-
+    private DatabaseSingleton database = DatabaseSingleton.getOnlyInstance();
     public AdminNewsGUI() {
         newsLabel = new JLabel("Add News");
         titleLabel = new JLabel("Title");
@@ -60,6 +65,8 @@ public class AdminNewsGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        database.addNewNews(titleField.getText(), Integer.parseInt(dayField.getText()), Integer.parseInt(monthField.getText()), Integer.parseInt(yearField.getText()));
+        JOptionPane.showMessageDialog(null, "The news has been added");
         // TODO Auto-generated method stub
         
     }
