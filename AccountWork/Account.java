@@ -61,10 +61,11 @@ public class Account
         }else{
             throw new Exception();
         }
-        if(tmp[7].equals("False")){
+        if(tmp[9].equals("false")){
             //Guest user
             double fee = cost * 0.15;
             refundAmount = cost - fee;
+            
             //pay fee
         }else{
             //Registered user does not have to pay fee
@@ -73,6 +74,7 @@ public class Account
         //Send email with coupon with refundAmount and the date it expires
         
         int yearPlusOne = time.getYear() + 1;
+        access.setSpecificSeat(tmp[2], Integer.parseInt(tmp[1]), tmp[8], Integer.parseInt(tmp[3]), Integer.parseInt(tmp[4]), Integer.parseInt(tmp[5]), 1);
         new SendEmail(tmp[6], "Refund credit", "The credit that has been refunded is: " + refundAmount + ". It will expire on " + yearPlusOne 
         + "/" + time.getMonthValue() + "/" + time.getDayOfMonth());
         access.removeSpecificTicket(String.valueOf(uniqueTicket));
