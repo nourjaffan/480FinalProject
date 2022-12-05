@@ -26,7 +26,7 @@ public class GUIAccount extends JFrame implements ActionListener{
 
     public GUIAccount(Account acc) {
         //initiallize labels
-        welcomeLabel = new JLabel("Welcome " + acc.getName());
+        welcomeLabel = new JLabel("Welcome");
         newsLabel = new JLabel("NEWS");
         failSearch = new JLabel();
         boolean checkIfNews = false;
