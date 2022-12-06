@@ -49,7 +49,7 @@ CREATE TABLE ShowTimes
     Day           int,
     Month         int,
     Year          int,
-    PRIMARY KEY (Title, ShowTime)
+    PRIMARY KEY (Title, ShowTime, Day, Month, Year)
     );
 
 
@@ -77,6 +77,6 @@ CREATE TABLE seat
     Day           int,
     Month         int,
     Year          int,
-    PRIMARY KEY (SeatNumber, Title, ShowTime)
+    PRIMARY KEY (SeatNumber, Title, ShowTime, Day, Month, Year)
     );
 INSERT INTO account VALUES ('admin', 'add', 'none', 'none', 'none', 'admin', 'pass', 'none')
