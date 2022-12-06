@@ -92,9 +92,17 @@ public class AdminMovieGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        database.addNewMovie(movieTitleField.getText(), movieGenreField.getText(), movieLengthField.getText(), movieReleaseTimeField.getText(),
+        if(movieTitleField.getText().isEmpty() || movieGenreField.getText().isEmpty() || movieLengthField.getText().isEmpty() || movieReleaseTimeField.getText().isEmpty() ||
+            movieDayField.getText().isEmpty() || movieMonthField.getText().isEmpty() || movieYearField.getText().isEmpty()){
+
+                JOptionPane.showMessageDialog(null, "Please enter all info");
+                
+            }else{
+                database.addNewMovie(movieTitleField.getText(), movieGenreField.getText(), movieLengthField.getText(), movieReleaseTimeField.getText(),
                             Integer.parseInt(movieDayField.getText()), Integer.parseInt(movieMonthField.getText()), Integer.parseInt(movieYearField.getText()));
-        JOptionPane.showMessageDialog(null, "The movie has been added to the database");
+                JOptionPane.showMessageDialog(null, "The movie has been added to the database");
+            }
+        
         // TODO Auto-generated method stub
         
     }
