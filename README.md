@@ -1,7 +1,7 @@
 # 480FinalProject
 
 IMPORTANT
-To run this code, you will have to make your own database using the accountDatabase.sql file. Once you run that, make sure that there is a user in the MySQL database that is named 'test' and the password as 'password'. The database will be hosted by the localhost too. Once done, set it so the user has access to the database. If having problems follow this guide https://docs.rackspace.com/support/how-to/create-and-edit-users-in-mysql/. They use 'newPassword' as the password but we changed it to 'password. 
+To run this code, you will have to make your own database using the accountDatabase.sql file. Once you run that, make sure that there is a user in the MySQL database that is named 'test' and the password as "password". The database will be hosted by the localhost too. Once done, set it so the user has access to the database. If having problems follow this guide https://docs.rackspace.com/support/how-to/create-and-edit-users-in-mysql/. They use "newPassword" as the password but we changed it to "password". 
 
 Once the database and user is set up, you can run the code with the jar file name Implementation.jar. To set up the movies, showtimes, and news, you will have go and login as an admin. To do that, type in 'admin' as the email and 'pass' as the password. If you would like to change those values, you will have to go inside the sql file and change where it says 'admin' and 'pass' to something you would like. Also you would need to change the code in loginGUI to equal those new values within the actionPerformed section. 
 
