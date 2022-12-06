@@ -68,12 +68,5 @@ public class TicketPaymentGUI extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, "The order has been completed and the ticket has been sent to your email");
         dispose();
     }
- /*
-    public static void main(String[] args) {
-        TicketPaymentGUI frame = new TicketPaymentGUI("nametimeman@gmail.com");
-        frame.setTitle("Payment");
-        frame.setVisible(true);
-        frame.setBounds(10,10, 400,250);
-    }
-    */
+ 
 }
