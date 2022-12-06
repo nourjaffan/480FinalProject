@@ -92,7 +92,7 @@ public class AccessDatabase {
             Statement myStmt = dbConnect.createStatement();
             
             String tmp = String.format("INSERT INTO movie " + "VALUES ('%s', '%s', '%s', '%s', %d, %d, %d)", 
-                title, genre, length, releaseTime, day, month, year);
+                title.toLowerCase(), genre, length, releaseTime, day, month, year);
                 
             myStmt.executeUpdate(tmp);
             myStmt.close();
@@ -109,7 +109,7 @@ public class AccessDatabase {
             results = myStmt.executeQuery("SELECT * FROM " + "movie");
             
             while(results.next()){
-                if(results.getString("Title").equals(movieName)){
+                if(results.getString("Title").equals(movieName.toLowerCase())){
                     
                     isThere = true;
                 }
@@ -128,7 +128,7 @@ public class AccessDatabase {
             results = myStmt.executeQuery("SELECT * FROM " + "movie");
             
             while(results.next()){
-                if(results.getString("Title").equals(movieName)){
+                if(results.getString("Title").equals(movieName.toLowerCase())){
                     
                     full.append(results.getString("Title") + "/" + results.getString("Genre") + "/" + results.getString("Length") + "/" +
                     results.getString("ReleaseTime") + "/" + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year"));
@@ -149,7 +149,7 @@ public class AccessDatabase {
             PreparedStatement myStmts = dbConnect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             myStmts.setInt(1,seatNum);
             myStmts.setString(2, showTime);
-            myStmts.setString(3, title);
+            myStmts.setString(3, title.toLowerCase());
             myStmts.setDouble(4, cost);
             myStmts.setInt(5,day);
             myStmts.setInt(6,month);
@@ -226,7 +226,7 @@ public class AccessDatabase {
             Statement myStmt = dbConnect.createStatement();
             
             String tmp = String.format("INSERT INTO showtimes " + "VALUES ('%s', '%s', %d, %d, %d)", 
-                title, showTime, day, month, year);
+                title.toLowerCase(), showTime, day, month, year);
             for(int i = 1; i <= amountOfSeats; i++){
                 addSeats(title, i, showTime, day, month, year);
             }
@@ -246,7 +246,7 @@ public class AccessDatabase {
             
             while(results.next()){
                 
-                if(results.getString("Title").equals(title) && results.getString("ShowTime").equals(showTime) &&
+                if(results.getString("Title").equals(title.toLowerCase()) && results.getString("ShowTime").equals(showTime) &&
                     results.getInt("Day") == day && results.getInt("Month") == month && results.getInt("Year") == year){
                     full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
                     + "/" + results.getString("ShowTime") + "/" + results.getString("Title"));
@@ -279,7 +279,7 @@ public class AccessDatabase {
                     removeSpecificSeats(results.getString("Title"), results.getString("ShowTime"), results.getInt("Day"),
                                         results.getInt("Month"), results.getInt("Year"));
                     
-                }else if(results.getString("Title").equals(title)){
+                }else if(results.getString("Title").equals(title.toLowerCase())){
                     full.append(results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year")
                     + "/" + results.getString("ShowTime") + "/" + results.getString("Title") + "\n");
                     
@@ -298,7 +298,7 @@ public class AccessDatabase {
             String query = "DELETE FROM showtimes WHERE Title = ? AND ShowTime = ? AND Day = ? AND Month = ? AND Year = ?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
 
-            myStmt.setString(1,title);
+            myStmt.setString(1,title.toLowerCase());
             myStmt.setString(2, showTime);
             myStmt.setInt(3, day);
             myStmt.setInt(4, month);
@@ -353,7 +353,7 @@ public class AccessDatabase {
             String query = "DELETE FROM news WHERE Title = ? AND Day = ? AND Month = ? AND Year = ?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
 
-            myStmt.setString(1,title);
+            myStmt.setString(1,title.toLowerCase());
             myStmt.setInt(2, date.getDayOfMonth());
             myStmt.setInt(3, date.getMonthValue());
             myStmt.setInt(4, date.getYear());
@@ -372,7 +372,7 @@ public class AccessDatabase {
             results = myStmt.executeQuery("SELECT * FROM " + "news");
             
             while(results.next()){
-                if(results.getString("Title").equals(title)){
+                if(results.getString("Title").equals(title.toLowerCase())){
                     
                     full.append(results.getString("News") + "/" + results.getInt("Day") + "/" + results.getInt("Month") + "/" + results.getInt("Year"));
                 }
@@ -391,7 +391,7 @@ public class AccessDatabase {
             Statement myStmt = dbConnect.createStatement();
                 
             String tmp = String.format("INSERT INTO seat " + "VALUES ('%s', 1, %d, '%s', %d, %d, %d)", 
-                title, seatNumber, showTime, day, month, year);
+                title.toLowerCase(), seatNumber, showTime, day, month, year);
             myStmt.executeUpdate(tmp);
             myStmt.close();
         }catch(SQLException e){
@@ -406,7 +406,7 @@ public class AccessDatabase {
             results = myStmt.executeQuery("SELECT * FROM " + "seat");
             
             while(results.next()){
-                if(results.getString("Title").equals(title) && results.getInt("SeatNumber") == seatNumber 
+                if(results.getString("Title").equals(title.toLowerCase()) && results.getInt("SeatNumber") == seatNumber 
                 && results.getString("ShowTime").equals(showTime) && results.getInt("Day") == day && results.getInt("Month") == month
                 && results.getInt("Year") == year){
                     
@@ -428,7 +428,7 @@ public class AccessDatabase {
             ResultSet theResult = myStmt.executeQuery("SELECT * FROM " + "seat");
             
             while(theResult.next()){
-                if(theResult.getString("Title").equals(title)&& theResult.getString("ShowTime").equals(showTime) && 
+                if(theResult.getString("Title").equals(title.toLowerCase())&& theResult.getString("ShowTime").equals(showTime) && 
                 theResult.getInt("Day") == day && theResult.getInt("Month") == month
                 && theResult.getInt("Year") == year){
                     if(!theResult.getBoolean("Vacant")){
@@ -449,7 +449,7 @@ public class AccessDatabase {
             String query = "UPDATE Seat SET Vacant = ? WHERE Title=? AND SeatNumber=? AND ShowTime=? AND Day=? AND Month=? AND Year=?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
             myStmt.setString(1, String.valueOf(boolVal));
-            myStmt.setString(2,title);
+            myStmt.setString(2,title.toLowerCase());
             myStmt.setString(3, String.valueOf(seatNumber));
             myStmt.setString(4,showTime);
             myStmt.setString(5, String.valueOf(day));
@@ -466,7 +466,7 @@ public class AccessDatabase {
             String query = "DELETE FROM seat WHERE Title = ? AND ShowTime = ? AND Day = ? AND Month = ? AND Year = ?";
             PreparedStatement myStmt = dbConnect.prepareStatement(query);
 
-            myStmt.setString(1,title);
+            myStmt.setString(1,title.toLowerCase());
             myStmt.setString(2,showTime);
             myStmt.setInt(3, day);
             myStmt.setInt(4, month);
