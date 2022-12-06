@@ -74,9 +74,15 @@ public class AdminShowtimeGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        database.addNewShowTime(titleField.getText(), timeField.getText(), Integer.parseInt(dayField.getText()),
-                                Integer.parseInt(monthField.getText()), Integer.parseInt(yearField.getText()), 40);
-        JOptionPane.showMessageDialog(null, "The new showtime has been added");
+        if (titleField.getText().isEmpty() || dayField.getText().isEmpty() || monthField.getText().isEmpty()
+                || yearField.getText().isEmpty() || timeField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please enter all info");
+                }else{
+                    database.addNewShowTime(titleField.getText(), timeField.getText(), Integer.parseInt(dayField.getText()),
+                                            Integer.parseInt(monthField.getText()), Integer.parseInt(yearField.getText()), 40);
+                    JOptionPane.showMessageDialog(null, "The new showtime has been added");
+                }
+        
         // TODO Auto-generated method stub
         
     }
