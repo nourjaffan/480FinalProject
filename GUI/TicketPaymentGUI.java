@@ -54,6 +54,7 @@ public class TicketPaymentGUI extends JFrame implements ActionListener {
         container.add(titleLabel);
         container.add(info);
         container.add(confirmButton);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override
