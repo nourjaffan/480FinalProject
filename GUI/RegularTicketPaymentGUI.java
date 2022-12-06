@@ -95,20 +95,30 @@ public class RegularTicketPaymentGUI extends JFrame implements ActionListener {
         container.add(billingNumberLabel);
         container.add(billingNumberField);
         container.add(confirmButton);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int tickNum = access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText());
-        PaymentImplement pay = new PaymentImplement(){};
-        pay.setPaymentStrategy(new PaymentTicket());
-        int cost = pay.performPayment();
-        access.setSpecificSeat(movie, seat, showtime, day, month, year, 0);
+        if (emailField.getText().isEmpty() || cardNumberField.getText().isEmpty() || cardNameField.getText().isEmpty()
+                || billingAddressField.getText().isEmpty() || billingNumberField.getText().isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Please enter all info");
+            
+        }else{
+            int tickNum = access.addNewTicket(this.seat, this.showtime, this.movie, 15.0, this.day, this.month, this.year, this.emailField.getText());
+            PaymentImplement pay = new PaymentImplement(){};
+            pay.setPaymentStrategy(new PaymentTicket());
+            int cost = pay.performPayment();
+            access.setSpecificSeat(movie, seat, showtime, day, month, year, 0);
+            
+            new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat
+                                            + "\n" + "Your unique ticket number is " + tickNum);
+            JOptionPane.showMessageDialog(null, "The order has been completed and the ticket has been sent to your email");
+            dispose();
+        }
         
-        new SendEmail(this.emailField.getText(), "Ticket Reciept", "Ticket cost = $"+ cost + " \n\n please enjoy "+ this.movie +" at "+this.showtime+ " on the " + this.day + " day of the month in seat " + this.seat
-                                        + "\n" + "Your unique ticket number is " + tickNum);
-        JOptionPane.showMessageDialog(null, "The order has been completed and the ticket has been sent to your email");
-        dispose();
         
     }
 }
