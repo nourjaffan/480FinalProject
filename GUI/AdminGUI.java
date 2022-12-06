@@ -69,12 +69,4 @@ public class AdminGUI extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        AdminGUI frame = new AdminGUI();
-        frame.setTitle("Admin");
-        frame.setVisible(true);
-        frame.setBounds(10,10, 400,400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-    }
 }
